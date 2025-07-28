@@ -1,0 +1,176 @@
+%-------------------------
+% Tailored Resume in LaTeX
+%------------------------
+
+\documentclass[letterpaper,10pt]{article}
+
+\usepackage{latexsym}
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage{marvosym}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\usepackage{tabularx}
+\usepackage{fontawesome5}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+% Adjust margins - FIXED BOTTOM MARGIN ISSUE
+\addtolength{\oddsidemargin}{-0.75in}
+\addtolength{\evensidemargin}{-0.75in}
+\addtolength{\textwidth}{1.5in}
+\addtolength{\topmargin}{-0.7in}
+\addtolength{\textheight}{1.4in}
+
+\urlstyle{same}
+
+\raggedbottom
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+% Sections formatting
+\titleformat{\section}{
+  \vspace{-4pt}\scshape\raggedright\large\bfseries
+}{}{0em}{}[\color{black}\titlerule \vspace{-5pt}]
+
+% Custom commands
+\newcommand{\resumeItem}[1]{
+  \item\small{
+    {#1 \vspace{-2pt}}
+  }
+}
+
+\newcommand{\resumeSubheading}[4]{
+  \vspace{-2pt}\item
+    \begin{tabular*}{1.0\textwidth}[t]{l@{\extracolsep{\fill}}r}
+      \textbf{#1} & \textbf{\small #2} \\
+      \textit{\small#3} & \textit{\small #4} \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0.15in, label={}]}
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
+\newcommand{\resumeItemListStart}{\begin{itemize}[leftmargin=*, itemsep=-1pt]}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-5pt}}
+
+%-------------------------------------------
+%%%%%%  RESUME STARTS HERE  %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+%----------HEADING----------
+\begin{center}
+    {\Huge \scshape Udish Kumar} \\ \vspace{1pt}
+    Seattle, WA \\ \vspace{1pt}
+    \small \raisebox{-0.1\height}\faPhone\ (213) 272-3355 ~ \href{mailto:udishkum@usc.edu}{\raisebox{-0.2\height}\faEnvelope\  \underline{udishkum@usc.edu}} ~ 
+    \href{https://linkedin.com/in/iudishkumar/}{\raisebox{-0.2\height}\faLinkedin\ \underline{linkedin.com/in/iudishkumar}}
+    \vspace{-8pt}
+\end{center}
+\vspace{-10pt}
+
+%-----------EDUCATION-----------
+\section{Education}
+\resumeSubHeadingListStart
+  \resumeSubheading
+    {University of Southern California}{Jan 2023 -- Dec 2024}
+    {Master of Science in Computer Science}{Los Angeles, CA}
+\resumeSubHeadingListEnd
+\vspace{-1pt}
+
+%-----------SKILLS-----------
+\section{Skills}
+\resumeItemListStart
+  \resumeItem{\textbf{Programming Languages}: Python, Kotlin, JavaScript (Node.js, ES6+), Java, PHP}
+  \resumeItem{\textbf{Frameworks \& Libraries}: Node.js, Express.js, Next.js, React.js, FastAPI, Laravel, Axios, Node Cache, Junit, Tailwind CSS}
+  \resumeItem{\textbf{Mobile Development}: Android Development, MVVM, Clean Architecture, RecyclerView, Android SDK, Facebook SDK, Google Analytics, Firebase Analytics, Firebase Auth}
+  \resumeItem{\textbf{Cloud Platforms}: Amazon Web Services (AWS), Google Cloud Platform (GCP)}
+  \resumeItem{\textbf{Databases}: MongoDB, PostgreSQL, DynamoDB, Firestore}
+  \resumeItem{\textbf{APIs \& Protocols}: RESTful APIs, ProtoBuf, eBay Finding API, eBay SDK, Razorpay API, Salesforce Marketing Cloud API}
+  \resumeItem{\textbf{DevOps \& CI/CD}: GitHub Actions, Jenkins, Git, JIRA, CI/CD Pipelines, Git Branching Strategies}
+  \resumeItem{\textbf{Tools \& Methodologies}: Data Structures \& Algorithms, Object-Oriented Programming (OOP), Microservices, Caching Strategies (Cache-Aside), Asynchronous Programming (Promise.all), Cron Jobs, Test Automation, SEO Optimization, Agile Methodologies (Scrum, Sprints)}
+  \resumeItem{\textbf{Data \& Analytics}: Sentiment Analysis, Keyword Extraction, Data Aggregation, Data Ingestion, Data Reconciliation}
+  \resumeItem{\textbf{Version Control}: Git, GitHub, Bitbucket, AWS Code Commit}
+\resumeItemListEnd
+\vspace{-1pt}
+
+%-----------EXPERIENCE-----------
+\section{Professional Experience}
+\resumeSubHeadingListStart
+  \resumeSubheading
+    {Sumeru Inc}{Jan 2025 -- June 2025}
+    {Software Engineer}{Los Angeles, CA}
+    \resumeItemListStart
+      \resumeItem{Revamped Art of Living's Jyotish Vastu Academy website front end: migrated PHP Laravel to Next.js; developed high-traffic consumer platform on AWS with scalable microservices; integrated Razorpay payment webhooks---achieved 4X revenue increase within two months (≈\$120K incremental).}
+      \resumeItem{Established standardized Git branching strategy and JIRA-driven sprint process: defined branching conventions, enforced pull-request workflows, trained cross-functional teams---accelerated feature delivery 40\%, improved engineering--product collaboration 30\%.}
+      \resumeItem{Partnered with Marketing \& QA teams: automated Salesforce Marketing Cloud email campaigns and workflows; architected backend logic, built automated test suites in Jenkins---ensured on-time campaigns, zero critical issues; reduced manual testing hours 75\% (≈\$45K annual savings).}
+      \resumeItem{Led migration of legacy WordPress site to Next.js: refactored API endpoints, enhanced SEO metadata, modularized backend services---boosted organic search traffic 50\%, reduced ongoing maintenance costs 25\%.}
+    \resumeItemListEnd
+\vspace{-5pt}
+  \resumeSubheading
+    {Tikr Media Inc.}{Aug 2024 -- Dec 2024}
+    {Software Engineer (Co-op)}{Santa Monica, CA}
+    \resumeItemListStart
+      \resumeItem{Developed Android counterpart of Series A iOS app in Kotlin using MVVM \& Clean Architecture---expanded reach 45\%, unlocked \$500K net annual revenue.}
+      \resumeItem{Designed ProtoBuf implementation for critical APIs (createAccount, signin, AuthWithToken), deploying to Buf Schema Registry and reducing serialization overhead by 70\%.}
+      \resumeItem{Built \& maintained CI/CD pipeline using GitHub Actions with branching model aligned to sprint cycles---cut Play Store deployment time 90\%.}
+    \resumeItemListEnd
+\vspace{-5pt}
+  \resumeSubheading
+    {SoFiiT}{May 2024 -- Jul 2024}
+    {Software Engineer Intern}{Los Angeles, CA}
+    \resumeItemListStart
+      \resumeItem{Architected MVVM-based Kotlin app for workout buddy discovery, integrating Google and Firebase Analytics, improving user retention by 20\%.}
+      \resumeItem{Developed OTP-based phone authentication and email restrictions(.edu) via Firebase Auth, securing onboarding for 10K+ daily users.}
+      \resumeItem{Integrated Firestore for offline support and real-time syncing, reducing data-sync latency by 40\%.}
+    \resumeItemListEnd
+\vspace{-5pt}
+  \resumeSubheading
+    {NTT Data}{Nov 2021 -- Dec 2022}
+    {Software Development Engineer}{India}
+    \resumeItemListStart
+      \resumeItem{Developed high-performance FastAPI RESTful API resource, replacing MuleSoft; improved messaging latency by 35\% and boosted API throughput by 60\%, saving \$150K annually in licensing costs.}
+      \resumeItem{Built a consolidated Operational Data Store on AWS (RDS PostgreSQL and DynamoDB) with a FastAPI front-end, ingesting data from ResourceGuru, Greenhouse, and Zoho; cut data reconciliation efforts by 80\% and saved \$75K/year.}
+      \resumeItem{Implemented CI/CD pipelines with Jenkins to automate build/test/deploy processes for Java and Python services; pushed release frequency to bi-weekly and lowered post-release defects by 50\%.}
+    \resumeItemListEnd
+\resumeSubHeadingListEnd
+\vspace{-5pt}
+
+%-----------PROJECTS-----------
+\section{Projects}
+\resumeSubHeadingListStart
+  \resumeSubheading
+    {RAG-Based FAQ Web Application}{}
+    {Python, Streamlit, LlamaIndex, OpenAI API, Vector Databases}{}
+    \resumeItemListStart
+      \resumeItem{Built scalable backend systems with Python implementing Retrieval-Augmented Generation (RAG) for AI-powered question-answering; designed extensible system architecture supporting document indexing and real-time query processing.}
+      \resumeItem{Developed backend interfaces integrating LlamaIndex and OpenAI APIs for LLM capabilities; implemented vector database indexing with similarity-based retrieval achieving 80\%+ answer accuracy through advanced AI integration.}
+      \resumeItem{Architected document processing pipeline with concurrent PDF handling and vector embeddings; built web interfaces for knowledge workers enabling efficient document analysis and reducing information retrieval time by 75\%.}
+    \resumeItemListEnd
+\vspace{-5pt}
+  \resumeSubheading
+    {CryptoBoard: Your Ultimate Cryptocurrency News \& Sentiment Dashboard}{}
+    {React, Node.js, Express.js, Sentiment Analysis, Axios, Railway}{}
+    \resumeItemListStart
+      \resumeItem{Designed CryptoBoard's modular Express.js backend (API, service, data layers), accelerating new-source onboarding by 75\%.}
+      \resumeItem{Implemented cache-aside pattern with Node Cache (1h TTL) and hourly cron jobs, reducing median API latency by 60\%.}
+      \resumeItem{Optimized data aggregation by orchestrating bulk-fetch of paginated APIs with Promise.all, decreasing processing time by 50\%.}
+      \resumeItem{Integrated robust retry logic for Axios calls, reducing external API failure rate by 90\% and advanced sentiment analysis and keyword extraction algorithms, enhancing relevance-score accuracy by 30\%.}
+    \resumeItemListEnd
+\vspace{-5pt}
+  \resumeSubheading
+    {FindMyProduct: Revolutionize Your Shopping Experience}{}
+    {Node.js, Kotlin, RESTful APIs, Google Cloud Platform (GCP), MongoDB, eBay Finding API}{}
+    \resumeItemListStart
+      \resumeItem{Developed a robust Kotlin-based Android application for seamless product search and wish-listing, integrating eBay's Finding API for real-time data retrieval and dynamically rendering results via RecyclerView components.}
+      \resumeItem{Architected and deployed a scalable Node.js backend on Google Cloud Platform (GCP), leveraging the eBay SDK to optimize business logic and API handling, reducing API response time by 25\%.}
+      \resumeItem{Implemented a secure MongoDB database with CRUD RESTful API operations for efficient user wishlist management, enhancing user satisfaction by 30\%. Integrated the Facebook SDK to enable social sharing functionalities for product posts.}
+    \resumeItemListEnd
+\resumeSubHeadingListEnd
+
+\end{document}
