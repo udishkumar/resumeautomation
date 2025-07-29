@@ -78,26 +78,50 @@ class LaTeXResumeOptimizer:
         self.api_key = None
         self.latex_template = None
         self.model_choice = "claude-sonnet-4-20250514"  # Default to Sonnet 4
-        self.input_resume_path = "input_resume.tex"
+        self.templates_dir = "resume_templates"
+        self.available_templates = {}
+        self.current_template_type = None
         
-        # Automatically load the input resume on initialization
-        self.auto_load_resume()
+        # Create templates directory if it doesn't exist
+        self.setup_templates_directory()
         
-    def auto_load_resume(self):
-        """Automatically load the input_resume.tex file"""
-        if os.path.exists(self.input_resume_path):
+        # Load available templates
+        self.load_available_templates()
+        
+    def setup_templates_directory(self):
+        """Create templates directory if it doesn't exist"""
+        if not os.path.exists(self.templates_dir):
             try:
-                with open(self.input_resume_path, 'r', encoding='utf-8') as f:
-                    self.latex_template = f.read()
-                print(f"✓ Automatically loaded resume from {self.input_resume_path}")
-                return True
+                os.makedirs(self.templates_dir)
+                print(f"✓ Created {self.templates_dir} directory")
             except Exception as e:
-                print(f"Error loading {self.input_resume_path}: {e}")
-                return False
+                print(f"Error creating {self.templates_dir}: {e}")
+    
+    def load_available_templates(self):
+        """Load all .tex files from templates directory"""
+        self.available_templates = {}
+        if os.path.exists(self.templates_dir):
+            for file in os.listdir(self.templates_dir):
+                if file.endswith('.tex'):
+                    template_name = file.replace('.tex', '')
+                    file_path = os.path.join(self.templates_dir, file)
+                    
+                    # Determine template type from filename
+                    if 'new_grad' in template_name.lower() or 'newgrad' in template_name.lower():
+                        template_type = "new_grad"
+                    elif 'experienced' in template_name.lower() or 'sde' in template_name.lower():
+                        template_type = "experienced"
+                    else:
+                        template_type = "general"
+                    
+                    self.available_templates[template_name] = {
+                        'path': file_path,
+                        'type': template_type
+                    }
+            
+            print(f"✓ Found {len(self.available_templates)} templates in {self.templates_dir}")
         else:
-            print(f"⚠ Warning: {self.input_resume_path} not found")
-            print("Please create this file with your resume content")
-            return False
+            print(f"⚠ Warning: {self.templates_dir} directory not found")
         
     def set_model(self, model_choice):
         """Set the Claude model to use"""
@@ -129,14 +153,38 @@ class LaTeXResumeOptimizer:
             print(f"Error loading LaTeX template: {e}")
             return False
     
-    def reload_input_resume(self):
-        """Reload the input resume file"""
-        return self.auto_load_resume()
+    def load_template_by_name(self, template_name):
+        """Load a specific template by name"""
+        if template_name in self.available_templates:
+            template_info = self.available_templates[template_name]
+            try:
+                with open(template_info['path'], 'r', encoding='utf-8') as f:
+                    self.latex_template = f.read()
+                self.current_template_type = template_info['type']
+                return True
+            except Exception as e:
+                print(f"Error loading template {template_name}: {e}")
+                return False
+        return False
     
     def optimize_resume_latex(self, job_description, original_latex_content):
         """Send resume and job description to Claude for optimization"""
         
+        # Determine section order based on template type
+        if self.current_template_type == "new_grad":
+            section_order = "Professional Summary → Education → Skills → Projects → Experience"
+            template_type_desc = "NEW GRAD template"
+        elif self.current_template_type == "experienced":
+            section_order = "Professional Summary → Skills → Experience → Education → Projects"
+            template_type_desc = "EXPERIENCED template"
+        else:
+            section_order = "Professional Summary → Skills → Experience → Education → Projects"
+            template_type_desc = "GENERAL template (using experienced order)"
+        
         prompt = f"""Expert ATS optimizer: Transform this LaTeX resume for 90%+ keyword match with the job description.
+
+TEMPLATE TYPE: {template_type_desc}
+REQUIRED SECTION ORDER: {section_order}
 
 ANALYZE & OPTIMIZE:
 1. Extract ALL keywords from job: technical skills, tools, certifications, soft skills, experience requirements
@@ -150,20 +198,17 @@ ANALYZE & OPTIMIZE:
 
 CRITICAL FORMATTING RULES:
 1. **Professional Summary**: MUST be 2-3 lines of continuous text with NO bullet points. Write as a paragraph.
-2. **Section Order**:
-   - For NEW GRAD (less than 3 years experience): Professional Summary → Education → Skills → Projects → Experience
-   - For EXPERIENCED (3+ years): Professional Summary → Skills → Experience → Education → Projects
-3. Determine if candidate is new grad or experienced based on their work experience duration in the resume
+2. **Section Order**: You MUST arrange sections in this exact order: {section_order}
+3. Maintain all LaTeX formatting and packages from the original template
 
 RULES:
-- Distinguish New Grad vs experienced roles based on years of experience
 - Maintain authenticity while optimizing
 - Natural language flow, no filler words
 - Confident, results-oriented tone
 - Professional Summary must be a paragraph (2-3 lines), NOT bullet points
 
 DELIVERABLES:
-Return ONLY the complete optimized LaTeX code ready for Overleaf compilation. Maintain exact document structure and packages from the original, but reorder sections according to the rules above.
+Return ONLY the complete optimized LaTeX code ready for Overleaf compilation. Maintain exact document structure and packages from the original, but sections MUST be in the order specified above.
 
 Current LaTeX Resume:
 ```latex
@@ -204,171 +249,180 @@ class LaTeXResumeAutomationGUI:
     
     def __init__(self):
         self.optimizer = LaTeXResumeOptimizer()
+        self.notebook = None  # Will store reference to notebook
         self.setup_gui()
         
     def setup_gui(self):
         """Create GUI elements"""
         self.root = tk.Tk()
         self.root.title("LaTeX Resume Automation Tool")
-        self.root.geometry("900x700")
+        self.root.geometry("1000x700")
         
-        # Main frame with scrollbar
-        main_canvas = tk.Canvas(self.root)
-        scrollbar = ttk.Scrollbar(self.root, orient="vertical", command=main_canvas.yview)
-        scrollable_frame = ttk.Frame(main_canvas)
+        # Create notebook for tabbed interface
+        self.notebook = ttk.Notebook(self.root)
+        self.notebook.pack(fill="both", expand=True, padx=5, pady=5)
         
-        scrollable_frame.bind(
-            "<Configure>",
-            lambda e: main_canvas.configure(scrollregion=main_canvas.bbox("all"))
-        )
+        # Tab 1: Setup & Input
+        setup_tab = ttk.Frame(self.notebook)
+        self.notebook.add(setup_tab, text="Setup & Input")
         
-        main_canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
-        main_canvas.configure(yscrollcommand=scrollbar.set)
+        # Tab 2: Output
+        output_tab = ttk.Frame(self.notebook)
+        self.notebook.add(output_tab, text="Generated Output")
         
-        main_frame = ttk.Frame(scrollable_frame, padding="10")
-        main_frame.pack(fill=tk.BOTH, expand=True)
+        # --- SETUP TAB ---
+        setup_frame = ttk.Frame(setup_tab, padding="10")
+        setup_frame.pack(fill="both", expand=True)
         
         # Title
-        title = ttk.Label(main_frame, text="LaTeX Resume Automation Tool", font=('Arial', 18, 'bold'))
-        title.pack(pady=10)
+        title = ttk.Label(setup_frame, text="LaTeX Resume Automation Tool", font=('Arial', 16, 'bold'))
+        title.grid(row=0, column=0, columnspan=3, pady=(0, 10))
         
-        description = ttk.Label(main_frame, text="Generate ATS-optimized LaTeX resumes using Claude AI", 
-                               font=('Arial', 10))
-        description.pack(pady=5)
+        # API Configuration
+        api_frame = ttk.LabelFrame(setup_frame, text="API Configuration", padding="10")
+        api_frame.grid(row=1, column=0, columnspan=3, sticky="ew", pady=5)
         
-        # API Key Section
-        api_frame = ttk.LabelFrame(main_frame, text="API Configuration", padding="10")
-        api_frame.pack(fill=tk.X, pady=10)
+        ttk.Label(api_frame, text="API Key:").grid(row=0, column=0, sticky="w")
+        self.api_key_entry = ttk.Entry(api_frame, width=40, show="*")
+        self.api_key_entry.grid(row=0, column=1, padx=5)
         
-        api_inner = ttk.Frame(api_frame)
-        api_inner.pack(fill=tk.X)
-        ttk.Label(api_inner, text="Claude API Key:").pack(side=tk.LEFT)
-        self.api_key_entry = ttk.Entry(api_inner, width=50, show="*")
-        self.api_key_entry.pack(side=tk.LEFT, padx=5)
-        
-        # Model Selection
-        model_frame = ttk.Frame(api_frame)
-        model_frame.pack(fill=tk.X, pady=(10, 0))
-        ttk.Label(model_frame, text="Model:").pack(side=tk.LEFT)
-        
+        # Model Selection (more compact)
+        ttk.Label(api_frame, text="Model:").grid(row=1, column=0, sticky="w", pady=(5,0))
         self.model_var = tk.StringVar(value="claude-sonnet-4-20250514")
-        models = [
-            ("Claude Sonnet 4 (Balanced - $3/$15)", "claude-sonnet-4-20250514"),
-            ("Claude Opus 4 (Most Powerful - $15/$75)", "claude-opus-4-20250514"),
-            ("Claude 3.5 Sonnet (Legacy - $3/$15)", "claude-3-5-sonnet-20241022")
-        ]
+        model_frame = ttk.Frame(api_frame)
+        model_frame.grid(row=1, column=1, sticky="w", pady=(5,0))
         
-        for i, (label, value) in enumerate(models):
-            ttk.Radiobutton(model_frame, text=label, variable=self.model_var, 
-                           value=value).pack(side=tk.LEFT, padx=5)
+        ttk.Radiobutton(model_frame, text="Sonnet 4 ($3/$15)", variable=self.model_var, 
+                       value="claude-sonnet-4-20250514").pack(side=tk.LEFT)
+        ttk.Radiobutton(model_frame, text="Opus 4 ($15/$75)", variable=self.model_var, 
+                       value="claude-opus-4-20250514").pack(side=tk.LEFT, padx=(10,0))
         
-        # Resume Status Section
-        resume_frame = ttk.LabelFrame(main_frame, text="Resume Status", padding="10")
-        resume_frame.pack(fill=tk.X, pady=10)
+        # Template Selection
+        template_frame = ttk.LabelFrame(setup_frame, text="Resume Template", padding="10")
+        template_frame.grid(row=2, column=0, columnspan=3, sticky="ew", pady=5)
         
-        resume_status_frame = ttk.Frame(resume_frame)
-        resume_status_frame.pack(fill=tk.X)
+        ttk.Label(template_frame, text="Template:").grid(row=0, column=0, sticky="w")
+        self.template_var = tk.StringVar()
+        self.template_dropdown = ttk.Combobox(template_frame, textvariable=self.template_var,
+                                            state="readonly", width=30)
+        self.template_dropdown.grid(row=0, column=1, padx=5)
         
-        # Check if input_resume.tex exists and show status
-        if self.optimizer.latex_template:
-            status_text = f"✓ Loaded from input_resume.tex"
-            status_color = "green"
-        else:
-            status_text = "✗ input_resume.tex not found - please create this file"
-            status_color = "red"
-            
-        self.resume_status = ttk.Label(resume_status_frame, text=status_text, foreground=status_color)
-        self.resume_status.pack(side=tk.LEFT, padx=5)
+        ttk.Button(template_frame, text="Load", command=self.load_selected_template).grid(row=0, column=2, padx=5)
+        ttk.Button(template_frame, text="Refresh", command=self.refresh_templates).grid(row=0, column=3, padx=5)
         
-        # Reload button
-        self.reload_btn = ttk.Button(resume_status_frame, text="Reload Resume", 
-                                    command=self.reload_resume)
-        self.reload_btn.pack(side=tk.LEFT, padx=10)
+        self.template_status = ttk.Label(template_frame, text="No template loaded", foreground="red")
+        self.template_status.grid(row=1, column=0, columnspan=4, pady=(5,0))
         
-        # Optional: Load different template button
-        self.load_other_btn = ttk.Button(resume_status_frame, text="Load Different Template", 
-                                        command=self.load_template)
-        self.load_other_btn.pack(side=tk.LEFT, padx=5)
+        # Job Description (side by side layout)
+        job_frame = ttk.LabelFrame(setup_frame, text="Job Description", padding="10")
+        job_frame.grid(row=3, column=0, columnspan=3, sticky="nsew", pady=5)
+        setup_frame.grid_rowconfigure(3, weight=1)
         
-        # Instructions
-        instructions = ttk.Label(resume_frame, 
-                               text="The tool automatically reads your resume from 'input_resume.tex'.\n" +
-                                    "Make sure to update that file with your actual resume content.",
-                               font=('Arial', 9), foreground="gray")
-        instructions.pack(pady=(5, 0))
+        self.job_desc = scrolledtext.ScrolledText(job_frame, height=15, width=70, wrap=tk.WORD)
+        self.job_desc.pack(fill="both", expand=True)
         
-        # Job Info Section
-        job_frame = ttk.LabelFrame(main_frame, text="Job Information", padding="10")
-        job_frame.pack(fill=tk.X, pady=10)
+        # Generate button
+        button_frame = ttk.Frame(setup_frame)
+        button_frame.grid(row=4, column=0, columnspan=3, pady=10)
         
-        # Job Description
-        ttk.Label(job_frame, text="Paste the job description below:").pack(anchor=tk.W, pady=(5, 5))
-        self.job_desc = scrolledtext.ScrolledText(job_frame, height=12, width=80, wrap=tk.WORD)
-        self.job_desc.pack(fill=tk.BOTH, expand=True, pady=5)
+        self.process_btn = ttk.Button(button_frame, text="Generate Optimized Resume", 
+                                     command=self.process_resume, 
+                                     style='Accent.TButton')
+        self.process_btn.pack()
         
-        # Output Section
-        output_frame = ttk.LabelFrame(main_frame, text="Generated LaTeX Code", padding="10")
-        output_frame.pack(fill=tk.BOTH, expand=True, pady=10)
+        self.status_label = ttk.Label(button_frame, text="Ready", foreground="green")
+        self.status_label.pack(pady=(5,0))
         
-        # Output text area
-        self.output_text = scrolledtext.ScrolledText(output_frame, height=15, width=80, wrap=tk.NONE)
-        self.output_text.pack(fill=tk.BOTH, expand=True, pady=5)
+        # Configure grid weights
+        setup_frame.grid_columnconfigure(1, weight=1)
         
-        # Button frame
-        button_frame = ttk.Frame(output_frame)
-        button_frame.pack(fill=tk.X, pady=5)
+        # --- OUTPUT TAB ---
+        output_frame = ttk.Frame(output_tab, padding="10")
+        output_frame.pack(fill="both", expand=True)
         
-        self.copy_btn = ttk.Button(button_frame, text="Copy LaTeX to Clipboard", 
+        # Output text
+        output_label = ttk.Label(output_frame, text="Generated LaTeX Code:", font=('Arial', 12, 'bold'))
+        output_label.pack(anchor="w", pady=(0,5))
+        
+        self.output_text = scrolledtext.ScrolledText(output_frame, height=25, width=80, wrap=tk.NONE)
+        self.output_text.pack(fill="both", expand=True)
+        
+        # Output buttons
+        output_btn_frame = ttk.Frame(output_frame)
+        output_btn_frame.pack(pady=10)
+        
+        self.copy_btn = ttk.Button(output_btn_frame, text="Copy to Clipboard", 
                                   command=self.copy_to_clipboard, state='disabled')
         self.copy_btn.pack(side=tk.LEFT, padx=5)
         
-        self.save_btn = ttk.Button(button_frame, text="Save as .tex File", 
+        self.save_btn = ttk.Button(output_btn_frame, text="Save as .tex File", 
                                   command=self.save_latex_file, state='disabled')
         self.save_btn.pack(side=tk.LEFT, padx=5)
-        
-        # Process button
-        self.process_btn = ttk.Button(main_frame, text="Generate Optimized LaTeX Resume", 
-                                     command=self.process_resume, 
-                                     style='Accent.TButton')
-        self.process_btn.pack(pady=10)
-        
-        # Status
-        self.status_label = ttk.Label(main_frame, text="Ready", foreground="green")
-        self.status_label.pack(pady=5)
-        
-        # Pack canvas and scrollbar
-        main_canvas.pack(side="left", fill="both", expand=True)
-        scrollbar.pack(side="right", fill="y")
         
         # Style
         style = ttk.Style()
         style.configure('Accent.TButton', font=('Arial', 12, 'bold'))
         
-    def reload_resume(self):
-        """Reload the input_resume.tex file"""
-        if self.optimizer.reload_input_resume():
-            self.resume_status.config(text="✓ Reloaded from input_resume.tex", foreground="green")
-            self.status_label.config(text="Resume reloaded successfully", foreground="green")
+        # Populate templates
+        self.refresh_templates()
+        
+    def refresh_templates(self):
+        """Refresh the templates dropdown"""
+        self.optimizer.load_available_templates()
+        
+        if self.optimizer.available_templates:
+            # Create display names with type indicators
+            template_names = []
+            for name, info in self.optimizer.available_templates.items():
+                if info['type'] == 'new_grad':
+                    display_name = f"{name} [New Grad]"
+                elif info['type'] == 'experienced':
+                    display_name = f"{name} [Experienced]"
+                else:
+                    display_name = f"{name} [General]"
+                template_names.append(display_name)
+            
+            self.template_dropdown['values'] = template_names
+            if template_names:
+                self.template_dropdown.current(0)
+            
+            self.status_label.config(text=f"Found {len(template_names)} templates", foreground="green")
         else:
-            self.resume_status.config(text="✗ Failed to reload input_resume.tex", foreground="red")
-            self.status_label.config(text="Error reloading resume", foreground="red")
-            messagebox.showerror("Error", 
-                               "Could not load input_resume.tex.\n" +
-                               "Please make sure the file exists in the same directory as this script.")
+            self.template_dropdown['values'] = []
+            self.status_label.config(text=f"No templates found in {self.optimizer.templates_dir}", 
+                                   foreground="orange")
+            messagebox.showwarning("No Templates", 
+                                 f"No .tex files found in '{self.optimizer.templates_dir}' folder.\n\n" +
+                                 "Please add your resume templates there.")
     
-    def load_template(self):
-        """Load a different LaTeX template file"""
-        file_path = filedialog.askopenfilename(
-            title="Select LaTeX Template",
-            filetypes=[("LaTeX Files", "*.tex"), ("All Files", "*.*")]
-        )
-        if file_path:
-            if self.optimizer.load_latex_template(file_path):
-                self.resume_status.config(text=f"✓ Loaded: {os.path.basename(file_path)}", foreground="green")
-                self.status_label.config(text="LaTeX template loaded successfully", foreground="green")
-            else:
-                self.resume_status.config(text="Failed to load template", foreground="red")
-                self.status_label.config(text="Error loading template", foreground="red")
+    def load_selected_template(self):
+        """Load the selected template"""
+        if not self.template_var.get():
+            messagebox.showerror("Error", "Please select a template first")
+            return
+        
+        # Extract actual template name (remove type indicator)
+        display_name = self.template_var.get()
+        template_name = display_name.split(' [')[0]
+        
+        if self.optimizer.load_template_by_name(template_name):
+            template_type = self.optimizer.current_template_type
+            type_display = template_type.replace('_', ' ').title()
+            self.template_status.config(
+                text=f"✓ Loaded: {template_name} ({type_display} format)", 
+                foreground="green"
+            )
+            self.status_label.config(text="Template loaded successfully", foreground="green")
+        else:
+            self.template_status.config(text="Failed to load template", foreground="red")
+            self.status_label.config(text="Error loading template", foreground="red")
+    
+    def reload_resume(self):
+        """Reload the current template"""
+        if self.template_var.get():
+            self.load_selected_template()
+        else:
+            messagebox.showinfo("Info", "Please select a template first")
     
     def copy_to_clipboard(self):
         """Copy LaTeX code to clipboard"""
@@ -419,9 +473,9 @@ class LaTeXResumeAutomationGUI:
             
         if not self.optimizer.latex_template:
             messagebox.showerror("Error", 
-                               "No resume loaded!\n\n" +
-                               "Please create 'input_resume.tex' with your resume content,\n" +
-                               "or use 'Load Different Template' to select another file.")
+                               "No resume template loaded!\n\n" +
+                               "Please select and load a template from the dropdown,\n" +
+                               f"or add .tex files to the '{self.optimizer.templates_dir}' folder.")
             return
             
         if not self.job_desc.get("1.0", tk.END).strip():
@@ -468,8 +522,11 @@ class LaTeXResumeAutomationGUI:
                 self.root.after(0, lambda: self.copy_btn.config(state='normal'))
                 self.root.after(0, lambda: self.save_btn.config(state='normal'))
                 self.root.after(0, lambda: self.status_label.config(
-                    text="✓ Resume optimized successfully! Copy the LaTeX code or save as file.", 
+                    text="✓ Resume optimized successfully! Check the 'Generated Output' tab.", 
                     foreground="green"))
+                
+                # Switch to output tab
+                self.root.after(0, lambda: self.notebook.select(1))
                 
                 # Show success message
                 self.root.after(0, lambda: messagebox.showinfo(
@@ -494,12 +551,20 @@ class LaTeXResumeAutomationGUI:
     
     def run(self):
         """Start the application"""
-        # Check if input_resume.tex exists on startup
-        if not os.path.exists("input_resume.tex"):
+        # Check if templates directory exists
+        if not os.path.exists(self.optimizer.templates_dir):
             messagebox.showwarning("Setup Required", 
-                                 "input_resume.tex not found!\n\n" +
-                                 "Please create this file with your resume content.\n" +
-                                 "You can also run simple_setup.py to create a template.")
+                                 f"'{self.optimizer.templates_dir}' folder not found!\n\n" +
+                                 "Creating the folder now. Please add your resume templates:\n" +
+                                 "- new_grad_resume.tex (for new grad format)\n" +
+                                 "- experienced_resume.tex or sde_resume.tex (for experienced format)")
+            self.optimizer.setup_templates_directory()
+        elif not self.optimizer.available_templates:
+            messagebox.showwarning("No Templates Found", 
+                                 f"No .tex files found in '{self.optimizer.templates_dir}' folder!\n\n" +
+                                 "Please add your resume templates:\n" +
+                                 "- new_grad_resume.tex (for new grad format)\n" +
+                                 "- experienced_resume.tex or sde_resume.tex (for experienced format)")
         
         # Center window on screen
         self.root.update_idletasks()

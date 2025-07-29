@@ -102,19 +102,25 @@ def main():
     print()
     
     # Create required directories
-    print("4. Creating directory for LaTeX templates...")
+    print("4. Creating directories for LaTeX templates...")
     try:
+        # Create main templates directory
+        os.makedirs("resume_templates", exist_ok=True)
+        print("   ✓ Created 'resume_templates/' - Store your LaTeX resume templates here")
+        
+        # Also create legacy latex_templates for backward compatibility
         os.makedirs("latex_templates", exist_ok=True)
-        print("   ✓ Created 'latex_templates/' - Store your LaTeX resume templates here")
+        print("   ✓ Created 'latex_templates/' for backward compatibility")
     except Exception as e:
-        print(f"   ✗ Failed to create 'latex_templates': {e}")
+        print(f"   ✗ Failed to create directories: {e}")
     print()
     
-    # Create the input resume template
-    print("5. Creating input_resume.tex file...")
-    input_resume_template = r"""%-------------------------
-% Your Resume Template
-% Place your actual resume content here
+    # Create sample templates
+    print("5. Creating sample resume templates...")
+    
+    # New Grad Template
+    new_grad_template = r"""%-------------------------
+% New Graduate Resume Template
 %------------------------
 
 \documentclass[letterpaper,10pt]{article}
@@ -148,51 +154,127 @@ def main():
     your.email@example.com | (123) 456-7890 | LinkedIn: linkedin.com/in/yourprofile
 \end{center}
 
-\section{Summary}
-Software Engineer with X years of experience...
-
-\section{Experience}
-\textbf{Company Name} - Job Title \\
-Location | Dates
-\begin{itemize}
-    \item Achievement 1
-    \item Achievement 2
-\end{itemize}
+\section{Professional Summary}
+Recent Computer Science graduate with strong foundation in algorithms and software development...
 
 \section{Education}
 \textbf{University Name} \\
-Degree | Dates
+Bachelor of Science in Computer Science | Expected: May 2024 \\
+GPA: 3.8/4.0 | Dean's List
 
 \section{Skills}
-Programming Languages: Python, Java, JavaScript \\
-Technologies: React, Node.js, AWS
+\textbf{Programming Languages}: Python, Java, JavaScript, C++ \\
+\textbf{Technologies}: React, Node.js, Django, Git, Docker \\
+\textbf{Databases}: MySQL, MongoDB, PostgreSQL
+
+\section{Projects}
+\textbf{Project Name} | \textit{Technologies Used} \\
+\textit{Month Year - Month Year}
+\begin{itemize}
+    \item Developed feature that improved performance by X\%
+    \item Implemented algorithm resulting in Y outcome
+\end{itemize}
+
+\section{Experience}
+\textbf{Company Name} - Software Engineering Intern \\
+Location | Summer 2023
+\begin{itemize}
+    \item Contributed to development of feature used by X users
+    \item Collaborated with team to deliver Y
+\end{itemize}
 
 \end{document}
 """
     
-    # Create input_resume.tex in the root directory
-    input_resume_path = "input_resume.tex"
-    try:
-        # Check if file already exists
-        if os.path.exists(input_resume_path):
-            print(f"   ⚠ {input_resume_path} already exists - skipping creation")
-            print("     (Your existing resume is preserved)")
-        else:
-            with open(input_resume_path, "w", encoding="utf-8") as f:
-                f.write(input_resume_template)
-            print(f"   ✓ Created {input_resume_path}")
-            print("     IMPORTANT: Replace the content of this file with your actual resume!")
-    except Exception as e:
-        print(f"   ✗ Failed to create input resume: {e}")
+    # Experienced/SDE Template  
+    experienced_template = r"""%-------------------------
+% Experienced Software Engineer Resume Template
+%------------------------
+
+\documentclass[letterpaper,10pt]{article}
+
+\usepackage{latexsym}
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage{marvosym}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\usepackage{tabularx}
+
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+% Adjust margins
+\addtolength{\oddsidemargin}{-0.5in}
+\addtolength{\evensidemargin}{-0.5in}
+\addtolength{\textwidth}{1in}
+\addtolength{\topmargin}{-.5in}
+\addtolength{\textheight}{1.0in}
+
+\begin{document}
+
+\begin{center}
+    {\Huge \scshape Your Name} \\ \vspace{1pt}
+    your.email@example.com | (123) 456-7890 | LinkedIn: linkedin.com/in/yourprofile
+\end{center}
+
+\section{Professional Summary}
+Software Engineer with 3+ years of experience in building scalable web applications...
+
+\section{Skills}
+\textbf{Programming Languages}: Python, Java, JavaScript, Go \\
+\textbf{Technologies}: React, Node.js, AWS, Kubernetes, Docker \\
+\textbf{Databases}: PostgreSQL, Redis, DynamoDB, MongoDB
+
+\section{Experience}
+\textbf{Current Company} - Software Engineer II \\
+Location | Jan 2022 - Present
+\begin{itemize}
+    \item Led development of microservice handling 1M+ requests/day
+    \item Reduced system latency by 40\% through optimization
+    \item Mentored 2 junior engineers
+\end{itemize}
+
+\textbf{Previous Company} - Software Engineer \\
+Location | Jun 2020 - Dec 2021
+\begin{itemize}
+    \item Built RESTful APIs serving 500K+ users
+    \item Implemented CI/CD pipeline reducing deployment time by 60\%
+\end{itemize}
+
+\section{Education}
+\textbf{University Name} \\
+Bachelor of Science in Computer Science | 2020
+
+\section{Projects}
+\textbf{Open Source Contribution} | \textit{Technology Stack} \\
+Description of significant contribution or side project
+
+\end{document}
+"""
     
-    # Also create a sample template in the templates folder
-    template_path = os.path.join("latex_templates", "sample_template.tex")
+    # Create templates in resume_templates directory
     try:
-        with open(template_path, "w", encoding="utf-8") as f:
-            f.write(input_resume_template)
-        print(f"   ✓ Created sample template: {template_path}")
+        # New grad template
+        new_grad_path = os.path.join("resume_templates", "new_grad_resume.tex")
+        with open(new_grad_path, "w", encoding="utf-8") as f:
+            f.write(new_grad_template)
+        print(f"   ✓ Created {new_grad_path}")
+        
+        # Experienced template
+        experienced_path = os.path.join("resume_templates", "experienced_resume.tex")
+        with open(experienced_path, "w", encoding="utf-8") as f:
+            f.write(experienced_template)
+        print(f"   ✓ Created {experienced_path}")
+        
+        print("   ✓ Sample templates created successfully!")
+        print("     IMPORTANT: Edit these templates with your actual resume content!")
     except Exception as e:
-        print(f"   ✗ Failed to create sample template: {e}")
+        print(f"   ✗ Failed to create templates: {e}")
     print()
     
     # Summary
@@ -205,17 +287,21 @@ Technologies: React, Node.js, AWS
         print()
         print("Next steps:")
         print("1. Get your Claude API key from https://console.anthropic.com")
-        print("2. IMPORTANT: Edit 'input_resume.tex' with your actual resume content")
+        print("2. Edit the templates in 'resume_templates' folder:")
+        print("   - new_grad_resume.tex (for new graduate format)")
+        print("   - experienced_resume.tex (for experienced/SDE format)")
         print("3. Run the main script: python resume_automation_fixed.py")
+        print("4. Select the appropriate template from the dropdown based on the job")
         print()
-        print("The tool will automatically read from 'input_resume.tex'")
-        print("No need to manually load templates anymore!")
+        print("The tool will use the section order based on your template selection:")
+        print("- New Grad: Summary → Education → Skills → Projects → Experience")
+        print("- Experienced: Summary → Skills → Experience → Education → Projects")
         print()
-        print("Benefits of this version:")
-        print("- Automatic resume loading from input_resume.tex")
-        print("- No manual copy-paste required")
-        print("- Direct Overleaf compatibility")
-        print("- Professional PDF output")
+        print("Benefits:")
+        print("- Multiple resume templates for different career stages")
+        print("- Automatic section ordering based on template type")
+        print("- No manual detection needed - you control the format")
+        print("- Professional PDF output via Overleaf")
     else:
         print(f"⚠ Some packages failed to install: {', '.join(failed_packages)}")
         print()
