@@ -148,14 +148,22 @@ ANALYZE & OPTIMIZE:
    - Projects/Education: Highlight relevant technologies and coursework
 4. Format for ATS: Standard headers, consistent dates, include acronyms+full forms (e.g., "Machine Learning (ML)")
 
+CRITICAL FORMATTING RULES:
+1. **Professional Summary**: MUST be 2-3 lines of continuous text with NO bullet points. Write as a paragraph.
+2. **Section Order**:
+   - For NEW GRAD (less than 3 years experience): Professional Summary → Education → Skills → Projects → Experience
+   - For EXPERIENCED (3+ years): Professional Summary → Skills → Experience → Education → Projects
+3. Determine if candidate is new grad or experienced based on their work experience duration in the resume
+
 RULES:
-- Distinguish New Grad vs experienced roles
+- Distinguish New Grad vs experienced roles based on years of experience
 - Maintain authenticity while optimizing
 - Natural language flow, no filler words
 - Confident, results-oriented tone
+- Professional Summary must be a paragraph (2-3 lines), NOT bullet points
 
 DELIVERABLES:
-Return ONLY the complete optimized LaTeX code ready for Overleaf compilation. Maintain exact document structure and packages from the original.
+Return ONLY the complete optimized LaTeX code ready for Overleaf compilation. Maintain exact document structure and packages from the original, but reorder sections according to the rules above.
 
 Current LaTeX Resume:
 ```latex
