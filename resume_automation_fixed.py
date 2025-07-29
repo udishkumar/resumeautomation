@@ -1,18 +1,21 @@
 """
 Resume Automation Tool - LaTeX Version
 Generates LaTeX code for tailored resumes using Claude API
-Automatically reads from input_resume.tex
+Automatically reads from templates and generates PDFs
 """
 
 import os
 import sys
 import subprocess
+from subprocess import TimeoutExpired
 import json
 import time
 from datetime import datetime
 from pathlib import Path
 import re
 import threading
+import tempfile
+import shutil
 
 # First, let's check and install dependencies
 def install_package(package):
@@ -79,29 +82,37 @@ class LaTeXResumeOptimizer:
         self.latex_template = None
         self.model_choice = "claude-sonnet-4-20250514"  # Default to Sonnet 4
         self.templates_dir = "resume_templates"
+        self.output_dir = "generated_resumes"
         self.available_templates = {}
         self.current_template_type = None
+        self.candidate_name = None
         
-        # Create templates directory if it doesn't exist
-        self.setup_templates_directory()
+        # Create directories if they don't exist
+        self.setup_directories()
         
         # Load available templates
         self.load_available_templates()
         
-    def setup_templates_directory(self):
-        """Create templates directory if it doesn't exist"""
-        if not os.path.exists(self.templates_dir):
-            try:
-                os.makedirs(self.templates_dir)
-                print(f"✓ Created {self.templates_dir} directory")
-            except Exception as e:
-                print(f"Error creating {self.templates_dir}: {e}")
+    def setup_directories(self):
+        """Create necessary directories"""
+        dirs = [self.templates_dir, self.output_dir]
+        for dir_name in dirs:
+            if not os.path.exists(dir_name):
+                try:
+                    os.makedirs(dir_name)
+                    print(f"Created {dir_name} directory")
+                except Exception as e:
+                    print(f"Error creating {dir_name}: {e}")
     
     def load_available_templates(self):
         """Load all .tex files from templates directory"""
         self.available_templates = {}
         if os.path.exists(self.templates_dir):
-            for file in os.listdir(self.templates_dir):
+            print(f"Scanning directory: {self.templates_dir}")
+            files = os.listdir(self.templates_dir)
+            print(f"Files found: {files}")
+            
+            for file in files:
                 if file.endswith('.tex'):
                     template_name = file.replace('.tex', '')
                     file_path = os.path.join(self.templates_dir, file)
@@ -118,11 +129,43 @@ class LaTeXResumeOptimizer:
                         'path': file_path,
                         'type': template_type
                     }
+                    print(f"Added template: {template_name} (type: {template_type})")
             
-            print(f"✓ Found {len(self.available_templates)} templates in {self.templates_dir}")
+            print(f"Total templates found: {len(self.available_templates)}")
         else:
-            print(f"⚠ Warning: {self.templates_dir} directory not found")
+            print(f"Warning: {self.templates_dir} directory not found")
+    
+    def load_template_by_name(self, template_name):
+        """Load a specific template by name"""
+        print(f"Attempting to load template: {template_name}")
         
+        if template_name not in self.available_templates:
+            print(f"Error: Template '{template_name}' not found in available templates")
+            print(f"Available templates: {list(self.available_templates.keys())}")
+            return False
+            
+        template_info = self.available_templates[template_name]
+        file_path = template_info['path']
+        
+        print(f"Loading from path: {file_path}")
+        
+        if not os.path.exists(file_path):
+            print(f"Error: File does not exist: {file_path}")
+            return False
+            
+        try:
+            with open(file_path, 'r', encoding='utf-8') as f:
+                self.latex_template = f.read()
+            self.current_template_type = template_info['type']
+            print(f"Successfully loaded template: {template_name} (type: {self.current_template_type})")
+            print(f"Template content length: {len(self.latex_template)} characters")
+            return True
+        except Exception as e:
+            print(f"Error loading template {template_name}: {e}")
+            import traceback
+            traceback.print_exc()
+            return False
+    
     def set_model(self, model_choice):
         """Set the Claude model to use"""
         self.model_choice = model_choice
@@ -143,29 +186,92 @@ class LaTeXResumeOptimizer:
             print(f"Error setting up Claude API: {e}")
             return False
     
-    def load_latex_template(self, file_path):
-        """Load LaTeX template from file"""
-        try:
-            with open(file_path, 'r', encoding='utf-8') as f:
-                self.latex_template = f.read()
-            return True
-        except Exception as e:
-            print(f"Error loading LaTeX template: {e}")
-            return False
+    def extract_candidate_name(self, latex_content):
+        """Extract candidate name from LaTeX resume"""
+        # Try to find name in common patterns
+        patterns = [
+            r'\\Huge\s+\\scshape\s+([^}]+)}',  # {\Huge \scshape Name}
+            r'\\Large\s+\\scshape\s+([^}]+)}',  # {\Large \scshape Name}
+            r'\\textbf\{([^}]+)\}.*\\\\.*email',  # \textbf{Name} followed by email
+            r'\\name\{([^}]+)\}',  # \name{Name}
+        ]
+        
+        for pattern in patterns:
+            match = re.search(pattern, latex_content)
+            if match:
+                name = match.group(1).strip()
+                # Clean up any LaTeX commands
+                name = re.sub(r'\\[a-zA-Z]+', '', name).strip()
+                # Replace spaces with underscores for filename
+                self.candidate_name = name.replace(' ', '_').upper()
+                return self.candidate_name
+        
+        # Default if no name found
+        self.candidate_name = "RESUME"
+        return self.candidate_name
     
-    def load_template_by_name(self, template_name):
-        """Load a specific template by name"""
-        if template_name in self.available_templates:
-            template_info = self.available_templates[template_name]
-            try:
-                with open(template_info['path'], 'r', encoding='utf-8') as f:
-                    self.latex_template = f.read()
-                self.current_template_type = template_info['type']
-                return True
-            except Exception as e:
-                print(f"Error loading template {template_name}: {e}")
-                return False
-        return False
+    def compile_latex_to_pdf(self, latex_content, company_name):
+        """Compile LaTeX to PDF and save with proper naming"""
+        try:
+            # Extract candidate name
+            candidate_name = self.extract_candidate_name(latex_content)
+            
+            # Create filename
+            date_str = datetime.now().strftime("%b%d")
+            safe_company = re.sub(r'[^a-zA-Z0-9_-]', '_', company_name.strip())
+            filename_base = f"{candidate_name}_{safe_company}_{date_str}"
+            
+            # Create temp directory for compilation
+            with tempfile.TemporaryDirectory() as temp_dir:
+                tex_path = os.path.join(temp_dir, f"{filename_base}.tex")
+                
+                # Write LaTeX content
+                with open(tex_path, 'w', encoding='utf-8') as f:
+                    f.write(latex_content)
+                
+                # Try different LaTeX compilers
+                compilers = ['pdflatex', 'xelatex', 'lualatex']
+                compiled = False
+                
+                for compiler in compilers:
+                    try:
+                        # Run compiler twice for references
+                        for _ in range(2):
+                            result = subprocess.run(
+                                [compiler, '-interaction=nonstopmode', tex_path],
+                                cwd=temp_dir,
+                                capture_output=True,
+                                text=True,
+                                timeout=30
+                            )
+                        
+                        pdf_temp_path = os.path.join(temp_dir, f"{filename_base}.pdf")
+                        if os.path.exists(pdf_temp_path):
+                            # Copy PDF to output directory
+                            pdf_final_path = os.path.join(self.output_dir, f"{filename_base}.pdf")
+                            shutil.copy2(pdf_temp_path, pdf_final_path)
+                            compiled = True
+                            return True, pdf_final_path
+                            
+                    except FileNotFoundError:
+                        continue
+                    except subprocess.TimeoutExpired:
+                        print(f"Timeout with {compiler} - compilation took too long")
+                        continue
+                    except Exception as e:
+                        print(f"Error with {compiler}: {e}")
+                        continue
+                
+                if not compiled:
+                    # Save LaTeX file even if compilation failed
+                    tex_final_path = os.path.join(self.output_dir, f"{filename_base}.tex")
+                    with open(tex_final_path, 'w', encoding='utf-8') as f:
+                        f.write(latex_content)
+                    return False, tex_final_path
+                    
+        except Exception as e:
+            print(f"Error in compile_latex_to_pdf: {e}")
+            return False, None
     
     def optimize_resume_latex(self, job_description, original_latex_content):
         """Send resume and job description to Claude for optimization"""
@@ -250,6 +356,8 @@ class LaTeXResumeAutomationGUI:
     def __init__(self):
         self.optimizer = LaTeXResumeOptimizer()
         self.notebook = None  # Will store reference to notebook
+        self.current_pdf_path = None  # Store path to generated PDF
+        self.template_mapping = {}  # Store display name to actual name mapping
         self.setup_gui()
         
     def setup_gui(self):
@@ -314,11 +422,21 @@ class LaTeXResumeAutomationGUI:
         self.template_status.grid(row=1, column=0, columnspan=4, pady=(5,0))
         
         # Job Description (side by side layout)
-        job_frame = ttk.LabelFrame(setup_frame, text="Job Description", padding="10")
+        job_frame = ttk.LabelFrame(setup_frame, text="Job Information", padding="10")
         job_frame.grid(row=3, column=0, columnspan=3, sticky="nsew", pady=5)
         setup_frame.grid_rowconfigure(3, weight=1)
         
-        self.job_desc = scrolledtext.ScrolledText(job_frame, height=15, width=70, wrap=tk.WORD)
+        # Company name field
+        company_frame = ttk.Frame(job_frame)
+        company_frame.pack(fill="x", pady=(0, 5))
+        ttk.Label(company_frame, text="Company Name:").pack(side=tk.LEFT, padx=(0, 5))
+        self.company_name_entry = ttk.Entry(company_frame, width=30)
+        self.company_name_entry.pack(side=tk.LEFT)
+        ttk.Label(company_frame, text="(for filename)", foreground="gray").pack(side=tk.LEFT, padx=(5, 0))
+        
+        # Job description
+        ttk.Label(job_frame, text="Job Description:").pack(anchor="w", pady=(5, 2))
+        self.job_desc = scrolledtext.ScrolledText(job_frame, height=12, width=70, wrap=tk.WORD)
         self.job_desc.pack(fill="both", expand=True)
         
         # Generate button
@@ -359,20 +477,31 @@ class LaTeXResumeAutomationGUI:
                                   command=self.save_latex_file, state='disabled')
         self.save_btn.pack(side=tk.LEFT, padx=5)
         
+        self.open_pdf_btn = ttk.Button(output_btn_frame, text="Open PDF", 
+                                      command=self.open_pdf, state='disabled')
+        self.open_pdf_btn.pack(side=tk.LEFT, padx=5)
+        
+        self.open_folder_btn = ttk.Button(output_btn_frame, text="Open Output Folder", 
+                                         command=self.open_output_folder)
+        self.open_folder_btn.pack(side=tk.LEFT, padx=5)
+        
         # Style
         style = ttk.Style()
         style.configure('Accent.TButton', font=('Arial', 12, 'bold'))
         
         # Populate templates
         self.refresh_templates()
-        
+    
     def refresh_templates(self):
         """Refresh the templates dropdown"""
+        print("\nRefreshing templates...")
         self.optimizer.load_available_templates()
         
         if self.optimizer.available_templates:
             # Create display names with type indicators
             template_names = []
+            self.template_mapping = {}  # Store mapping of display names to actual names
+            
             for name, info in self.optimizer.available_templates.items():
                 if info['type'] == 'new_grad':
                     display_name = f"{name} [New Grad]"
@@ -381,29 +510,49 @@ class LaTeXResumeAutomationGUI:
                 else:
                     display_name = f"{name} [General]"
                 template_names.append(display_name)
+                self.template_mapping[display_name] = name
+                print(f"Mapped: '{display_name}' -> '{name}'")
             
             self.template_dropdown['values'] = template_names
             if template_names:
-                self.template_dropdown.current(0)
+                self.template_dropdown.set(template_names[0])  # Set first item as default
+                print(f"Set default selection to: {template_names[0]}")
             
             self.status_label.config(text=f"Found {len(template_names)} templates", foreground="green")
+            print(f"Total templates available: {len(template_names)}")
         else:
             self.template_dropdown['values'] = []
+            self.template_dropdown.set('')  # Clear the selection
             self.status_label.config(text=f"No templates found in {self.optimizer.templates_dir}", 
                                    foreground="orange")
+            print("No templates found!")
             messagebox.showwarning("No Templates", 
                                  f"No .tex files found in '{self.optimizer.templates_dir}' folder.\n\n" +
                                  "Please add your resume templates there.")
     
     def load_selected_template(self):
         """Load the selected template"""
-        if not self.template_var.get():
+        selected_value = self.template_var.get()
+        print(f"\nLoad button clicked. Selected value: '{selected_value}'")
+        
+        if not selected_value:
             messagebox.showerror("Error", "Please select a template first")
             return
         
-        # Extract actual template name (remove type indicator)
-        display_name = self.template_var.get()
-        template_name = display_name.split(' [')[0]
+        # Check if templates are available
+        if not self.optimizer.available_templates:
+            print("No templates available in optimizer")
+            messagebox.showerror("Error", "No templates found. Please add .tex files to the resume_templates folder.")
+            return
+        
+        # Get actual template name from mapping
+        if selected_value in self.template_mapping:
+            template_name = self.template_mapping[selected_value]
+            print(f"Found template name in mapping: {template_name}")
+        else:
+            # Fallback to old method if mapping not found
+            template_name = selected_value.split(' [')[0]
+            print(f"Using fallback method to extract template name: {template_name}")
         
         if self.optimizer.load_template_by_name(template_name):
             template_type = self.optimizer.current_template_type
@@ -413,9 +562,12 @@ class LaTeXResumeAutomationGUI:
                 foreground="green"
             )
             self.status_label.config(text="Template loaded successfully", foreground="green")
+            print(f"Template loaded successfully: {template_name}")
         else:
             self.template_status.config(text="Failed to load template", foreground="red")
             self.status_label.config(text="Error loading template", foreground="red")
+            print(f"Failed to load template: {template_name}")
+            messagebox.showerror("Error", f"Failed to load template: {template_name}\nCheck console for details.")
     
     def reload_resume(self):
         """Reload the current template"""
@@ -464,6 +616,52 @@ class LaTeXResumeAutomationGUI:
                 except Exception as e:
                     messagebox.showerror("Error", f"Failed to save file: {str(e)}")
     
+    def open_pdf(self):
+        """Open the generated PDF"""
+        if self.current_pdf_path and os.path.exists(self.current_pdf_path):
+            try:
+                if sys.platform == "win32":
+                    os.startfile(self.current_pdf_path)
+                elif sys.platform == "darwin":  # macOS
+                    subprocess.run(["open", self.current_pdf_path], check=True)
+                else:  # linux variants
+                    # Try different Linux file openers
+                    for opener in ["xdg-open", "gnome-open", "kde-open"]:
+                        try:
+                            subprocess.run([opener, self.current_pdf_path], check=True)
+                            break
+                        except (subprocess.CalledProcessError, FileNotFoundError):
+                            continue
+                    else:
+                        messagebox.showerror("Error", "Could not find a PDF viewer")
+            except Exception as e:
+                messagebox.showerror("Error", f"Could not open PDF: {e}")
+        else:
+            messagebox.showerror("Error", "PDF file not found")
+    
+    def open_output_folder(self):
+        """Open the output folder"""
+        try:
+            output_path = self.optimizer.output_dir
+            if not os.path.exists(output_path):
+                os.makedirs(output_path)
+            
+            if sys.platform == "win32":
+                os.startfile(output_path)
+            elif sys.platform == "darwin":  # macOS
+                subprocess.run(["open", output_path], check=True)
+            else:  # linux variants
+                for opener in ["xdg-open", "gnome-open", "kde-open", "nautilus"]:
+                    try:
+                        subprocess.run([opener, output_path], check=True)
+                        break
+                    except (subprocess.CalledProcessError, FileNotFoundError):
+                        continue
+                else:
+                    messagebox.showerror("Error", "Could not open file manager")
+        except Exception as e:
+            messagebox.showerror("Error", f"Could not open folder: {e}")
+    
     def process_resume(self):
         """Process resume optimization"""
         # Validate inputs
@@ -476,6 +674,10 @@ class LaTeXResumeAutomationGUI:
                                "No resume template loaded!\n\n" +
                                "Please select and load a template from the dropdown,\n" +
                                f"or add .tex files to the '{self.optimizer.templates_dir}' folder.")
+            return
+            
+        if not self.company_name_entry.get().strip():
+            messagebox.showerror("Error", "Please enter the company name")
             return
             
         if not self.job_desc.get("1.0", tk.END).strip():
@@ -492,6 +694,7 @@ class LaTeXResumeAutomationGUI:
             self.root.after(0, lambda: self.status_label.config(text="Setting up API...", foreground="blue"))
             self.root.after(0, lambda: self.process_btn.config(state='disabled'))
             self.root.after(0, lambda: self.output_text.delete("1.0", tk.END))
+            self.current_pdf_path = None
             
             # Setup API
             if not self.optimizer.setup_claude_api(self.api_key_entry.get()):
@@ -507,8 +710,9 @@ class LaTeXResumeAutomationGUI:
             self.root.after(0, lambda: self.status_label.config(text="Optimizing resume with Claude AI...", 
                                                                foreground="blue"))
             
-            # Get job description
+            # Get inputs
             job_description = self.job_desc.get("1.0", tk.END).strip()
+            company_name = self.company_name_entry.get().strip()
             
             # Optimize resume
             optimized_latex = self.optimizer.optimize_resume_latex(
@@ -521,22 +725,62 @@ class LaTeXResumeAutomationGUI:
                 self.root.after(0, lambda: self.output_text.insert("1.0", optimized_latex))
                 self.root.after(0, lambda: self.copy_btn.config(state='normal'))
                 self.root.after(0, lambda: self.save_btn.config(state='normal'))
+                
+                # Update status for PDF generation
                 self.root.after(0, lambda: self.status_label.config(
-                    text="✓ Resume optimized successfully! Check the 'Generated Output' tab.", 
-                    foreground="green"))
+                    text="Generating PDF...", 
+                    foreground="blue"))
                 
-                # Switch to output tab
-                self.root.after(0, lambda: self.notebook.select(1))
+                # Try to compile to PDF
+                pdf_success, output_path = self.optimizer.compile_latex_to_pdf(optimized_latex, company_name)
                 
-                # Show success message
-                self.root.after(0, lambda: messagebox.showinfo(
-                    "Success", 
-                    "Resume optimization complete!\n\n" +
-                    "You can now:\n" +
-                    "1. Copy the LaTeX code to clipboard\n" +
-                    "2. Save as a .tex file\n" +
-                    "3. Paste into Overleaf to generate PDF"
-                ))
+                if pdf_success:
+                    self.current_pdf_path = output_path
+                    filename = os.path.basename(output_path)
+                    
+                    self.root.after(0, lambda: self.open_pdf_btn.config(state='normal'))
+                    self.root.after(0, lambda: self.status_label.config(
+                        text=f"✓ Resume optimized and PDF generated: {filename}", 
+                        foreground="green"))
+                    
+                    # Switch to output tab
+                    self.root.after(0, lambda: self.notebook.select(1))
+                    
+                    # Show success message
+                    self.root.after(0, lambda: messagebox.showinfo(
+                        "Success", 
+                        f"Resume optimization complete!\n\n" +
+                        f"PDF saved as: {filename}\n" +
+                        f"Location: {self.optimizer.output_dir}/\n\n" +
+                        "Click 'Open PDF' to view it or 'Open Output Folder' to see all resumes."
+                    ))
+                else:
+                    # PDF compilation failed but LaTeX saved
+                    if output_path:
+                        filename = os.path.basename(output_path)
+                        self.root.after(0, lambda: self.status_label.config(
+                            text=f"✓ LaTeX saved: {filename} (PDF compilation failed)", 
+                            foreground="orange"))
+                        
+                        # Switch to output tab
+                        self.root.after(0, lambda: self.notebook.select(1))
+                        
+                        self.root.after(0, lambda: messagebox.showwarning(
+                            "Partial Success", 
+                            f"Resume optimized but PDF compilation failed.\n\n" +
+                            f"LaTeX file saved as: {filename}\n" +
+                            f"Location: {self.optimizer.output_dir}/\n\n" +
+                            "You can copy the LaTeX code and compile it in Overleaf.\n\n" +
+                            "To enable PDF generation, install a LaTeX distribution:\n" +
+                            "• Windows: MiKTeX or TeX Live\n" +
+                            "• Mac: MacTeX\n" +
+                            "• Linux: texlive-full"
+                        ))
+                    else:
+                        self.root.after(0, lambda: self.status_label.config(
+                            text="✓ Resume optimized (use Overleaf for PDF)", 
+                            foreground="green"))
+                        self.root.after(0, lambda: self.notebook.select(1))
             else:
                 self.root.after(0, lambda: self.status_label.config(text="Optimization failed", foreground="red"))
                 self.root.after(0, lambda: messagebox.showerror("Error", 
@@ -558,7 +802,7 @@ class LaTeXResumeAutomationGUI:
                                  "Creating the folder now. Please add your resume templates:\n" +
                                  "- new_grad_resume.tex (for new grad format)\n" +
                                  "- experienced_resume.tex or sde_resume.tex (for experienced format)")
-            self.optimizer.setup_templates_directory()
+            self.optimizer.setup_directories()
         elif not self.optimizer.available_templates:
             messagebox.showwarning("No Templates Found", 
                                  f"No .tex files found in '{self.optimizer.templates_dir}' folder!\n\n" +
@@ -581,7 +825,61 @@ if __name__ == "__main__":
     print("LaTeX Resume Automation Tool")
     print("-" * 40)
     print("This tool generates ATS-optimized LaTeX resumes using Claude AI")
-    print("Reading resume from: input_resume.tex")
+    print("Reading templates from: resume_templates/")
+    print("Output PDFs saved to: generated_resumes/")
+    print()
+    
+    # Check for LaTeX installation
+    latex_installed = False
+    print("Checking for LaTeX installation...")
+    print(f"Current PATH: {os.environ.get('PATH', 'Not found')}\n")
+    
+    # Common MacTeX paths
+    mactex_paths = [
+        "/Library/TeX/texbin",
+        "/usr/local/texlive/2024/bin/universal-darwin",
+        "/usr/local/texlive/2023/bin/universal-darwin",
+        "/usr/local/texlive/2022/bin/universal-darwin",
+        "/opt/local/bin",
+        "/usr/texbin"
+    ]
+    
+    # Add MacTeX paths to PATH if they exist
+    for path in mactex_paths:
+        if os.path.exists(path) and path not in os.environ.get('PATH', ''):
+            print(f"Adding {path} to PATH")
+            os.environ['PATH'] = f"{path}:{os.environ.get('PATH', '')}"
+    
+    for compiler in ['pdflatex', 'xelatex', 'lualatex']:
+        try:
+            # Try to find the compiler
+            which_result = subprocess.run(['which', compiler], capture_output=True, text=True)
+            if which_result.returncode == 0:
+                compiler_path = which_result.stdout.strip()
+                print(f"Found {compiler} at: {compiler_path}")
+            
+            result = subprocess.run([compiler, '--version'], capture_output=True, text=True)
+            if result.returncode == 0:
+                latex_installed = True
+                print(f"✓ {compiler} is working")
+                version_lines = result.stdout.split('\n')[:2]
+                for line in version_lines:
+                    if line.strip():
+                        print(f"  {line.strip()}")
+                break
+        except FileNotFoundError:
+            print(f"✗ {compiler} not found")
+            continue
+    
+    if not latex_installed:
+        print("\nWarning: No LaTeX compiler found - PDF generation will not work")
+        print("MacTeX might not be in your PATH. Try:")
+        print("  1. Close and reopen the terminal/application")
+        print("  2. Run: export PATH=\"/Library/TeX/texbin:$PATH\"")
+        print("  3. Or reinstall MacTeX from https://tug.org/mactex/")
+        print("\nYou can still use the tool to generate LaTeX code for Overleaf")
+    else:
+        print("\nLaTeX installation verified!")
     print()
     
     try:
@@ -593,6 +891,6 @@ if __name__ == "__main__":
         print("1. Make sure Python is installed correctly")
         print("2. Try running: pip install --upgrade pip")
         print("3. Then run: pip install anthropic")
-        print("4. Create input_resume.tex with your resume content")
+        print("4. Create templates in resume_templates folder")
         print("\nPress Enter to exit...")
         input()

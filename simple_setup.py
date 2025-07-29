@@ -102,17 +102,19 @@ def main():
     print()
     
     # Create required directories
-    print("4. Creating directories for LaTeX templates...")
-    try:
-        # Create main templates directory
-        os.makedirs("resume_templates", exist_ok=True)
-        print("   ✓ Created 'resume_templates/' - Store your LaTeX resume templates here")
-        
-        # Also create legacy latex_templates for backward compatibility
-        os.makedirs("latex_templates", exist_ok=True)
-        print("   ✓ Created 'latex_templates/' for backward compatibility")
-    except Exception as e:
-        print(f"   ✗ Failed to create directories: {e}")
+    print("4. Creating directories...")
+    directories = {
+        "resume_templates": "Store your LaTeX resume templates here",
+        "generated_resumes": "Your generated PDF resumes will be saved here",
+        "latex_templates": "Legacy directory for backward compatibility"
+    }
+    
+    for dir_name, description in directories.items():
+        try:
+            os.makedirs(dir_name, exist_ok=True)
+            print(f"   ✓ Created '{dir_name}/' - {description}")
+        except Exception as e:
+            print(f"   ✗ Failed to create '{dir_name}': {e}")
     print()
     
     # Create sample templates
@@ -291,17 +293,43 @@ Description of significant contribution or side project
         print("   - new_grad_resume.tex (for new graduate format)")
         print("   - experienced_resume.tex (for experienced/SDE format)")
         print("3. Run the main script: python resume_automation_fixed.py")
-        print("4. Select the appropriate template from the dropdown based on the job")
+        print("4. Enter company name and paste job description")
+        print("5. Click 'Generate Optimized Resume' to get PDF output")
         print()
-        print("The tool will use the section order based on your template selection:")
-        print("- New Grad: Summary → Education → Skills → Projects → Experience")
-        print("- Experienced: Summary → Skills → Experience → Education → Projects")
+        print("The tool will:")
+        print("- Use section order based on your template selection:")
+        print("  • New Grad: Summary → Education → Skills → Projects → Experience")
+        print("  • Experienced: Summary → Skills → Experience → Education → Projects")
+        print("- Generate PDFs with naming: YOUR_NAME_COMPANY_DATE.pdf")
+        print("- Save all PDFs to 'generated_resumes' folder for tracking")
         print()
-        print("Benefits:")
-        print("- Multiple resume templates for different career stages")
-        print("- Automatic section ordering based on template type")
-        print("- No manual detection needed - you control the format")
-        print("- Professional PDF output via Overleaf")
+        print("Features:")
+        print("- Automatic PDF generation (if LaTeX is installed)")
+        print("- Company-specific file naming for easy tracking")
+        print("- Professional formatting with 90%+ ATS match")
+        print("- Falls back to LaTeX code if PDF generation fails")
+        print()
+        
+        # Check for LaTeX installation
+        print("Checking for LaTeX installation...")
+        latex_found = False
+        for compiler in ['pdflatex', 'xelatex', 'lualatex']:
+            try:
+                result = subprocess.run([compiler, '--version'], capture_output=True, text=True)
+                if result.returncode == 0:
+                    print(f"   ✓ Found {compiler} - PDF generation will work!")
+                    latex_found = True
+                    break
+            except FileNotFoundError:
+                continue
+        
+        if not latex_found:
+            print("   ⚠ No LaTeX compiler found - PDF generation won't work")
+            print("   To enable PDF generation, install:")
+            print("   • Windows: MiKTeX (https://miktex.org)")
+            print("   • macOS: MacTeX (https://tug.org/mactex/)")
+            print("   • Linux: sudo apt-get install texlive-full")
+            print("   Note: You can still use the tool to generate LaTeX for Overleaf!")
     else:
         print(f"⚠ Some packages failed to install: {', '.join(failed_packages)}")
         print()
