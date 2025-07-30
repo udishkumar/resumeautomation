@@ -16,6 +16,8 @@ import re
 import threading
 import tempfile
 import shutil
+import base64
+import configparser
 
 # First, let's check and install dependencies
 def install_package(package):
@@ -86,6 +88,7 @@ class LaTeXResumeOptimizer:
         self.available_templates = {}
         self.current_template_type = None
         self.candidate_name = None
+        self.config_file = "config.ini"
         
         # Create directories if they don't exist
         self.setup_directories()
@@ -93,6 +96,50 @@ class LaTeXResumeOptimizer:
         # Load available templates
         self.load_available_templates()
         
+        # Load API key from config if exists
+        self.load_api_key_from_config()
+    
+    def load_api_key_from_config(self):
+        """Load and decrypt API key from config file"""
+        if os.path.exists(self.config_file):
+            try:
+                config = configparser.ConfigParser()
+                config.read(self.config_file)
+                
+                if 'API' in config and 'key' in config['API']:
+                    encrypted_key = config['API']['key']
+                    # Decrypt base64 encoded key
+                    self.api_key = base64.b64decode(encrypted_key.encode()).decode('utf-8')
+                    print("API key loaded from config file")
+                    return True
+            except Exception as e:
+                print(f"Error loading API key from config: {e}")
+        return False
+    
+    def save_api_key_to_config(self, api_key):
+        """Encrypt and save API key to config file"""
+        try:
+            # Encrypt key using base64
+            encrypted_key = base64.b64encode(api_key.encode()).decode('utf-8')
+            
+            config = configparser.ConfigParser()
+            if os.path.exists(self.config_file):
+                config.read(self.config_file)
+            
+            if 'API' not in config:
+                config['API'] = {}
+            
+            config['API']['key'] = encrypted_key
+            
+            with open(self.config_file, 'w') as f:
+                config.write(f)
+            
+            print("API key saved to config file")
+            return True
+        except Exception as e:
+            print(f"Error saving API key to config: {e}")
+            return False
+    
     def setup_directories(self):
         """Create necessary directories"""
         dirs = [self.templates_dir, self.output_dir]
@@ -221,6 +268,8 @@ class LaTeXResumeOptimizer:
             safe_company = re.sub(r'[^a-zA-Z0-9_-]', '_', company_name.strip())
             filename_base = f"{candidate_name}_{safe_company}_{date_str}"
             
+            print(f"\nStarting PDF compilation for: {filename_base}")
+            
             # Create temp directory for compilation
             with tempfile.TemporaryDirectory() as temp_dir:
                 tex_path = os.path.join(temp_dir, f"{filename_base}.tex")
@@ -228,49 +277,100 @@ class LaTeXResumeOptimizer:
                 # Write LaTeX content
                 with open(tex_path, 'w', encoding='utf-8') as f:
                     f.write(latex_content)
+                print(f"LaTeX file written to: {tex_path}")
                 
                 # Try different LaTeX compilers
                 compilers = ['pdflatex', 'xelatex', 'lualatex']
                 compiled = False
+                compilation_errors = []
                 
                 for compiler in compilers:
+                    print(f"\nTrying {compiler}...")
                     try:
+                        # Check if compiler exists
+                        check_result = subprocess.run([compiler, '--version'], 
+                                                    capture_output=True, text=True)
+                        if check_result.returncode != 0:
+                            print(f"{compiler} not found or not working")
+                            continue
+                        
                         # Run compiler twice for references
-                        for _ in range(2):
+                        for run in range(2):
+                            print(f"  Run {run + 1} of 2...")
                             result = subprocess.run(
-                                [compiler, '-interaction=nonstopmode', tex_path],
+                                [compiler, '-interaction=nonstopmode', '-halt-on-error', tex_path],
                                 cwd=temp_dir,
                                 capture_output=True,
                                 text=True,
-                                timeout=30
+                                timeout=60
                             )
+                            
+                            if result.returncode != 0:
+                                error_msg = f"{compiler} failed with return code {result.returncode}"
+                                print(f"  {error_msg}")
+                                
+                                # Extract error from log
+                                if result.stdout:
+                                    lines = result.stdout.split('\n')
+                                    for i, line in enumerate(lines):
+                                        if 'error' in line.lower() or '!' in line:
+                                            error_details = '\n'.join(lines[max(0, i-2):min(len(lines), i+3)])
+                                            print(f"  Error details:\n{error_details}")
+                                            compilation_errors.append(f"{compiler}: {error_details}")
+                                            break
+                                
+                                if result.stderr:
+                                    print(f"  Stderr: {result.stderr[:500]}")
+                                break
                         
+                        # Check if PDF was created
                         pdf_temp_path = os.path.join(temp_dir, f"{filename_base}.pdf")
                         if os.path.exists(pdf_temp_path):
                             # Copy PDF to output directory
                             pdf_final_path = os.path.join(self.output_dir, f"{filename_base}.pdf")
                             shutil.copy2(pdf_temp_path, pdf_final_path)
+                            print(f"PDF successfully created: {pdf_final_path}")
                             compiled = True
                             return True, pdf_final_path
+                        else:
+                            print(f"  No PDF file generated")
                             
                     except FileNotFoundError:
+                        print(f"{compiler} not found in PATH")
+                        compilation_errors.append(f"{compiler}: Not found in system PATH")
                         continue
                     except subprocess.TimeoutExpired:
                         print(f"Timeout with {compiler} - compilation took too long")
+                        compilation_errors.append(f"{compiler}: Compilation timeout (>60s)")
                         continue
                     except Exception as e:
                         print(f"Error with {compiler}: {e}")
+                        compilation_errors.append(f"{compiler}: {str(e)}")
                         continue
                 
                 if not compiled:
+                    print("\nAll compilers failed. Saving LaTeX file...")
                     # Save LaTeX file even if compilation failed
                     tex_final_path = os.path.join(self.output_dir, f"{filename_base}.tex")
                     with open(tex_final_path, 'w', encoding='utf-8') as f:
                         f.write(latex_content)
+                    
+                    # Also save error log
+                    error_log_path = os.path.join(self.output_dir, f"{filename_base}_errors.txt")
+                    with open(error_log_path, 'w', encoding='utf-8') as f:
+                        f.write("PDF Compilation Errors\n")
+                        f.write("=" * 50 + "\n\n")
+                        for error in compilation_errors:
+                            f.write(error + "\n\n")
+                    
+                    print(f"LaTeX saved to: {tex_final_path}")
+                    print(f"Error log saved to: {error_log_path}")
                     return False, tex_final_path
                     
         except Exception as e:
             print(f"Error in compile_latex_to_pdf: {e}")
+            import traceback
+            traceback.print_exc()
             return False, None
     
     def optimize_resume_latex(self, job_description, original_latex_content):
@@ -394,6 +494,13 @@ class LaTeXResumeAutomationGUI:
         self.api_key_entry = ttk.Entry(api_frame, width=40, show="*")
         self.api_key_entry.grid(row=0, column=1, padx=5)
         
+        # Load API key if available
+        if self.optimizer.api_key:
+            self.api_key_entry.insert(0, self.optimizer.api_key)
+        
+        # Save API key button
+        ttk.Button(api_frame, text="Save Key", command=self.save_api_key).grid(row=0, column=2, padx=5)
+        
         # Model Selection (more compact)
         ttk.Label(api_frame, text="Model:").grid(row=1, column=0, sticky="w", pady=(5,0))
         self.model_var = tk.StringVar(value="claude-sonnet-4-20250514")
@@ -439,7 +546,7 @@ class LaTeXResumeAutomationGUI:
         self.job_desc = scrolledtext.ScrolledText(job_frame, height=12, width=70, wrap=tk.WORD)
         self.job_desc.pack(fill="both", expand=True)
         
-        # Generate button
+        # Generate button and progress bar
         button_frame = ttk.Frame(setup_frame)
         button_frame.grid(row=4, column=0, columnspan=3, pady=10)
         
@@ -447,6 +554,14 @@ class LaTeXResumeAutomationGUI:
                                      command=self.process_resume, 
                                      style='Accent.TButton')
         self.process_btn.pack()
+        
+        # Progress bar (initially hidden)
+        self.progress_frame = ttk.Frame(button_frame)
+        self.progress_frame.pack(pady=(10, 0))
+        
+        self.progress_bar = ttk.Progressbar(self.progress_frame, mode='indeterminate', 
+                                          length=300)
+        self.progress_label = ttk.Label(self.progress_frame, text="", foreground="blue")
         
         self.status_label = ttk.Label(button_frame, text="Ready", foreground="green")
         self.status_label.pack(pady=(5,0))
@@ -491,6 +606,34 @@ class LaTeXResumeAutomationGUI:
         
         # Populate templates
         self.refresh_templates()
+    
+    def save_api_key(self):
+        """Save API key to config file"""
+        api_key = self.api_key_entry.get().strip()
+        if not api_key:
+            messagebox.showerror("Error", "Please enter an API key")
+            return
+        
+        if self.optimizer.save_api_key_to_config(api_key):
+            self.optimizer.api_key = api_key
+            messagebox.showinfo("Success", "API key saved successfully!")
+        else:
+            messagebox.showerror("Error", "Failed to save API key")
+    
+    def show_progress(self, message):
+        """Show progress bar with message"""
+        self.progress_label.config(text=message)
+        self.progress_label.pack(pady=(0, 5))
+        self.progress_bar.pack()
+        self.progress_bar.start(10)  # Start animation
+        self.progress_frame.pack(pady=(10, 0))
+    
+    def hide_progress(self):
+        """Hide progress bar"""
+        self.progress_bar.stop()
+        self.progress_bar.pack_forget()
+        self.progress_label.pack_forget()
+        self.progress_frame.pack_forget()
     
     def refresh_templates(self):
         """Refresh the templates dropdown"""
@@ -664,9 +807,12 @@ class LaTeXResumeAutomationGUI:
     
     def process_resume(self):
         """Process resume optimization"""
+        # Get API key from entry or from optimizer
+        api_key = self.api_key_entry.get().strip() or self.optimizer.api_key
+        
         # Validate inputs
-        if not self.api_key_entry.get():
-            messagebox.showerror("Error", "Please enter your Claude API key")
+        if not api_key:
+            messagebox.showerror("Error", "Please enter your Claude API key or save it in config")
             return
             
         if not self.optimizer.latex_template:
@@ -684,20 +830,27 @@ class LaTeXResumeAutomationGUI:
             messagebox.showerror("Error", "Please enter the job description")
             return
         
+        # Save the API key for this session
+        self.optimizer.api_key = api_key
+        
         # Process in thread to keep UI responsive
         threading.Thread(target=self._process_resume_thread, daemon=True).start()
     
     def _process_resume_thread(self):
         """Process resume in background thread"""
+        start_time = time.time()
+        
         try:
             # Update UI
+            self.root.after(0, lambda: self.show_progress("Setting up API..."))
             self.root.after(0, lambda: self.status_label.config(text="Setting up API...", foreground="blue"))
             self.root.after(0, lambda: self.process_btn.config(state='disabled'))
             self.root.after(0, lambda: self.output_text.delete("1.0", tk.END))
             self.current_pdf_path = None
             
             # Setup API
-            if not self.optimizer.setup_claude_api(self.api_key_entry.get()):
+            if not self.optimizer.setup_claude_api(self.optimizer.api_key):
+                self.root.after(0, lambda: self.hide_progress())
                 self.root.after(0, lambda: self.status_label.config(text="API setup failed", foreground="red"))
                 self.root.after(0, lambda: messagebox.showerror("Error", 
                     "Failed to setup API. Please check your API key."))
@@ -706,7 +859,9 @@ class LaTeXResumeAutomationGUI:
             # Set selected model
             self.optimizer.set_model(self.model_var.get())
             
-            # Update status
+            # Update progress
+            self.root.after(0, lambda: self.progress_label.config(
+                text=f"Optimizing resume with Claude AI... ({int(time.time() - start_time)}s)"))
             self.root.after(0, lambda: self.status_label.config(text="Optimizing resume with Claude AI...", 
                                                                foreground="blue"))
             
@@ -726,7 +881,9 @@ class LaTeXResumeAutomationGUI:
                 self.root.after(0, lambda: self.copy_btn.config(state='normal'))
                 self.root.after(0, lambda: self.save_btn.config(state='normal'))
                 
-                # Update status for PDF generation
+                # Update progress for PDF generation
+                self.root.after(0, lambda: self.progress_label.config(
+                    text=f"Generating PDF... ({int(time.time() - start_time)}s)"))
                 self.root.after(0, lambda: self.status_label.config(
                     text="Generating PDF...", 
                     foreground="blue"))
@@ -734,13 +891,18 @@ class LaTeXResumeAutomationGUI:
                 # Try to compile to PDF
                 pdf_success, output_path = self.optimizer.compile_latex_to_pdf(optimized_latex, company_name)
                 
+                # Hide progress bar
+                self.root.after(0, lambda: self.hide_progress())
+                
+                total_time = int(time.time() - start_time)
+                
                 if pdf_success:
                     self.current_pdf_path = output_path
                     filename = os.path.basename(output_path)
                     
                     self.root.after(0, lambda: self.open_pdf_btn.config(state='normal'))
                     self.root.after(0, lambda: self.status_label.config(
-                        text=f"✓ Resume optimized and PDF generated: {filename}", 
+                        text=f"✓ Resume optimized and PDF generated: {filename} ({total_time}s)", 
                         foreground="green"))
                     
                     # Switch to output tab
@@ -749,7 +911,7 @@ class LaTeXResumeAutomationGUI:
                     # Show success message
                     self.root.after(0, lambda: messagebox.showinfo(
                         "Success", 
-                        f"Resume optimization complete!\n\n" +
+                        f"Resume optimization complete in {total_time} seconds!\n\n" +
                         f"PDF saved as: {filename}\n" +
                         f"Location: {self.optimizer.output_dir}/\n\n" +
                         "Click 'Open PDF' to view it or 'Open Output Folder' to see all resumes."
@@ -759,7 +921,7 @@ class LaTeXResumeAutomationGUI:
                     if output_path:
                         filename = os.path.basename(output_path)
                         self.root.after(0, lambda: self.status_label.config(
-                            text=f"✓ LaTeX saved: {filename} (PDF compilation failed)", 
+                            text=f"✓ LaTeX saved: {filename} (PDF compilation failed) ({total_time}s)", 
                             foreground="orange"))
                         
                         # Switch to output tab
@@ -767,7 +929,7 @@ class LaTeXResumeAutomationGUI:
                         
                         self.root.after(0, lambda: messagebox.showwarning(
                             "Partial Success", 
-                            f"Resume optimized but PDF compilation failed.\n\n" +
+                            f"Resume optimized in {total_time} seconds but PDF compilation failed.\n\n" +
                             f"LaTeX file saved as: {filename}\n" +
                             f"Location: {self.optimizer.output_dir}/\n\n" +
                             "You can copy the LaTeX code and compile it in Overleaf.\n\n" +
@@ -778,16 +940,18 @@ class LaTeXResumeAutomationGUI:
                         ))
                     else:
                         self.root.after(0, lambda: self.status_label.config(
-                            text="✓ Resume optimized (use Overleaf for PDF)", 
+                            text=f"✓ Resume optimized (use Overleaf for PDF) ({total_time}s)", 
                             foreground="green"))
                         self.root.after(0, lambda: self.notebook.select(1))
             else:
+                self.root.after(0, lambda: self.hide_progress())
                 self.root.after(0, lambda: self.status_label.config(text="Optimization failed", foreground="red"))
                 self.root.after(0, lambda: messagebox.showerror("Error", 
                     "Failed to optimize resume. Please check your API key and try again."))
                 
         except Exception as e:
             error_msg = f"Error: {str(e)}"
+            self.root.after(0, lambda: self.hide_progress())
             self.root.after(0, lambda: self.status_label.config(text=error_msg[:50] + "...", foreground="red"))
             self.root.after(0, lambda: messagebox.showerror("Error", error_msg))
         finally:
