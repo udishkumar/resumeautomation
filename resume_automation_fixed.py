@@ -441,10 +441,32 @@ Return ONLY LaTeX code starting with \\documentclass and ending with \\end{{docu
             # Remove any markdown code blocks if present
             latex_match = re.search(r'\\documentclass.*?\\end\{document\}', response_text, re.DOTALL)
             if latex_match:
-                return latex_match.group(0)
+                latex_code = latex_match.group(0)
             else:
                 # If no match, assume the whole response is LaTeX
-                return response_text
+                latex_code = response_text
+            
+            # Check if the LaTeX seems truncated
+            if latex_code and not latex_code.strip().endswith(r'\end{document}'):
+                print("Warning: LaTeX output appears truncated")
+                # Try to fix common truncation issues
+                if latex_code.count('{') > latex_code.count('}'):
+                    # Add missing closing braces
+                    missing_braces = latex_code.count('{') - latex_code.count('}')
+                    latex_code += '}' * missing_braces
+                
+                # Ensure it ends with \end{document}
+                if not latex_code.strip().endswith(r'\end{document}'):
+                    # Close any open environments
+                    if r'\resumeItemListStart' in latex_code and latex_code.count(r'\resumeItemListStart') > latex_code.count(r'\resumeItemListEnd'):
+                        latex_code += '\n\\resumeItemListEnd'
+                    if r'\resumeSubHeadingListStart' in latex_code and latex_code.count(r'\resumeSubHeadingListStart') > latex_code.count(r'\resumeSubHeadingListEnd'):
+                        latex_code += '\n\\resumeSubHeadingListEnd'
+                    latex_code += '\n\n\\end{document}'
+                
+                print("Attempted to fix truncated LaTeX")
+            
+            return latex_code
                 
         except Exception as e:
             print(f"Error optimizing resume: {e}")
@@ -525,8 +547,12 @@ class LaTeXResumeAutomationGUI:
         ttk.Button(template_frame, text="Load", command=self.load_selected_template).grid(row=0, column=2, padx=5)
         ttk.Button(template_frame, text="Refresh", command=self.refresh_templates).grid(row=0, column=3, padx=5)
         
+        # Custom template button
+        ttk.Button(template_frame, text="Load Custom Template", 
+                  command=self.load_custom_template).grid(row=0, column=4, padx=5)
+        
         self.template_status = ttk.Label(template_frame, text="No template loaded", foreground="red")
-        self.template_status.grid(row=1, column=0, columnspan=4, pady=(5,0))
+        self.template_status.grid(row=1, column=0, columnspan=5, pady=(5,0))
         
         # Job Description (side by side layout)
         job_frame = ttk.LabelFrame(setup_frame, text="Job Information", padding="10")
@@ -672,6 +698,64 @@ class LaTeXResumeAutomationGUI:
             messagebox.showwarning("No Templates", 
                                  f"No .tex files found in '{self.optimizer.templates_dir}' folder.\n\n" +
                                  "Please add your resume templates there.")
+    
+    def load_custom_template(self):
+        """Load a custom LaTeX template file from anywhere"""
+        file_path = filedialog.askopenfilename(
+            title="Select LaTeX Template",
+            filetypes=[("LaTeX Files", "*.tex"), ("All Files", "*.*")]
+        )
+        
+        if file_path:
+            print(f"\nLoading custom template from: {file_path}")
+            
+            try:
+                with open(file_path, 'r', encoding='utf-8') as f:
+                    self.optimizer.latex_template = f.read()
+                
+                # Determine template type from filename
+                filename = os.path.basename(file_path).lower()
+                if 'new_grad' in filename or 'newgrad' in filename:
+                    self.optimizer.current_template_type = "new_grad"
+                    type_display = "New Grad"
+                elif 'experienced' in filename or 'sde' in filename:
+                    self.optimizer.current_template_type = "experienced"
+                    type_display = "Experienced"
+                else:
+                    # Ask user to specify type
+                    response = messagebox.askyesno(
+                        "Template Type",
+                        "Is this a New Grad template?\n\n" +
+                        "Click 'Yes' for New Grad (Education → Skills → Projects → Experience)\n" +
+                        "Click 'No' for Experienced (Skills → Experience → Education → Projects)"
+                    )
+                    if response:
+                        self.optimizer.current_template_type = "new_grad"
+                        type_display = "New Grad"
+                    else:
+                        self.optimizer.current_template_type = "experienced"
+                        type_display = "Experienced"
+                
+                # Update status
+                template_name = os.path.basename(file_path)
+                self.template_status.config(
+                    text=f"✓ Loaded: {template_name} ({type_display} format) [Custom]", 
+                    foreground="green"
+                )
+                self.status_label.config(text="Custom template loaded successfully", foreground="green")
+                
+                # Clear dropdown selection since we're using custom
+                self.template_dropdown.set("")
+                
+                print(f"Custom template loaded successfully")
+                print(f"Template type: {self.optimizer.current_template_type}")
+                print(f"Template content length: {len(self.optimizer.latex_template)} characters")
+                
+            except Exception as e:
+                print(f"Error loading custom template: {e}")
+                messagebox.showerror("Error", f"Failed to load template:\n{str(e)}")
+                self.template_status.config(text="Failed to load custom template", foreground="red")
+                self.status_label.config(text="Error loading custom template", foreground="red")
     
     def load_selected_template(self):
         """Load the selected template"""

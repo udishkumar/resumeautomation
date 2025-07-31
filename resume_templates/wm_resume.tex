@@ -1,0 +1,205 @@
+%-------------------------
+% Tailored Resume in LaTeX
+%------------------------
+
+\documentclass[letterpaper,10pt]{article}
+
+\usepackage{latexsym}
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage{marvosym}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\usepackage{tabularx}
+\usepackage{fontawesome5}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+% Adjust margins - INCREASED BOTTOM MARGIN
+\addtolength{\oddsidemargin}{-0.75in}
+\addtolength{\evensidemargin}{-0.75in}
+\addtolength{\textwidth}{1.5in}
+\addtolength{\topmargin}{-0.75in}
+\addtolength{\textheight}{1.6in}
+
+\urlstyle{same}
+
+\raggedbottom
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+% Sections formatting
+\titleformat{\section}{
+  \vspace{-4pt}\scshape\raggedright\large\bfseries
+}{}{0em}{}[\color{black}\titlerule \vspace{-5pt}]
+
+% Custom commands
+\newcommand{\resumeItem}[1]{
+  \item\small{
+    {#1 \vspace{-2pt}}
+  }
+}
+
+\newcommand{\resumeSubheading}[4]{
+  \vspace{-2pt}\item
+    \begin{tabular*}{1.0\textwidth}[t]{l@{\extracolsep{\fill}}r}
+      \textbf{#1} & \textbf{\small #2} \\
+      \textit{\small#3} & \textit{\small #4} \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0.15in, label={}]}
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
+\newcommand{\resumeItemListStart}{\begin{itemize}[leftmargin=*, itemsep=-1pt]}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-5pt}}
+
+%-------------------------------------------
+%%%%%%  RESUME STARTS HERE  %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+%----------HEADING----------
+\begin{center}
+    {\Huge \scshape Udish Kumar} \\ \vspace{1pt}
+    Los Angeles, CA 90007 \\ \vspace{1pt}
+    \small \raisebox{-0.1\height}\faPhone\ (213) 272-3355 ~ \href{mailto:udishkum@usc.edu}{\raisebox{-0.2\height}\faEnvelope\  \underline{udishkum@usc.edu}} ~ 
+    \href{https://linkedin.com/in/iudishkumar/}{\raisebox{-0.2\height}\faLinkedin\ \underline{linkedin.com/in/iudishkumar}}
+    \vspace{-8pt}
+\end{center}
+\vspace{-10pt}
+
+%-----------SUMMARY-----------
+\section{Summary}
+Results-driven Integration Architect and Full-Stack Developer with 8+ years architecting enterprise integration solutions using webMethods Digital Business Platform, ESB architecture, and API management systems. Expert in webMethods Integration Server, API Gateway, Microservices Runtime, and Digital Business Platform Suite. Delivered enterprise integration projects generating \$3.2M+ in revenue while reducing operational costs by \$500K+ annually through strategic technology migrations and process optimization. Built and deployed 250+ integration solutions across multiple industries, leveraging cloud platforms (AWS, GCP, Azure) and modern development frameworks. Recent MS in Computer Science graduate from USC, combining advanced technical expertise with proven leadership capabilities at Fortune 500 companies.
+\vspace{-10pt}
+
+%-----------EDUCATION-----------
+\section{Education}
+\resumeSubHeadingListStart
+  \resumeSubheading
+    {University of Southern California}{Jan 2023 -- Dec 2024}
+    {Master of Science in Computer Science}{Los Angeles, CA}
+\resumeSubHeadingListEnd
+\vspace{-11pt}
+
+%-----------EXPERIENCE-----------
+\section{Experience}
+\resumeSubHeadingListStart
+  \resumeSubheading
+    {Sumeru Inc}{Jan 2025 -- May 2025}
+    {Full Stack Engineer}{Remote}
+    \resumeItemListStart
+      \resumeItem{Designed and implemented payment and webhook integrations for Razorpay by developing an AWS-hosted Next.js frontend and PHP Laravel backend; achieved 99\% transaction reliability and generated \$3.2M in incremental annual revenue.}
+      \resumeItem{Migrated a legacy WordPress site to Next.js by refactoring API endpoints for SEO and modularity; reduced page-load times by 40\%, cut hosting costs by \$98K/year, and boosted organic traffic by 30\%.}
+      \resumeItem{Enhanced service integrations by incorporating \textbf{webMethods Integration Server}, streamlining data exchanges between Razorpay and backend APIs, improving integration reliability by 20\%.}
+    \resumeItemListEnd
+\vspace{-11pt}
+  \resumeSubheading
+    {NTT Data}{Nov 2021 -- Dec 2022}
+    {Lead Engineer, Professional Services}{India}
+    \resumeItemListStart
+      \resumeItem{Architected and deployed FastAPI microservices to replace MuleSoft ESB integrations on AWS by defining JSON/XML schemas and RESTful endpoints; eliminated \$150K in annual licensing fees and boosted API throughput by 60\%.}
+      \resumeItem{Developed an Operational Data Store platform by integrating ResourceGuru, Greenhouse, and Zoho via Django APIs and AWS services; reduced data-availability latency from hours to minutes, improved data integrity by 80\%, and saved \$75K annually.}
+      \resumeItem{Implemented CI/CD pipelines using Git, Maven, and Jenkins by automating testing and deployment workflows; increased release frequency to bi-weekly and reduced post-release defects by 50\%.}
+      \resumeItem{Deployed \textbf{webMethods Microservices Runtime}, optimized service communication between internal platforms, reducing integration friction by 30\%, enhancing operational efficiency.}
+      \resumeItem{Mentored 14 engineers on DevOps best practices and integration standards by conducting workshops and code reviews; improved code coverage to 90\% and saved \$40K in remediation costs.}
+    \resumeItemListEnd
+\vspace{-11pt}
+  \resumeSubheading
+    {PricewaterhouseCoopers LLP}{Apr 2021 -- Oct 2021}
+    {Senior Integration Consultant, Technology Consulting (Advisory)}{India}
+    \resumeItemListStart
+      \resumeItem{Built middleware framework on \textbf{webMethods Digital Business Platform} by developing logging, caching, configuration-management, and PDF-generation utilities; accelerated integration development speed by 30\%, saving \$50K annually.}
+      \resumeItem{Designed and implemented encrypted API payload flows on \textbf{webMethods Integration Server} using symmetric cryptography and automated testing via \textbf{webMethods Unit Test Executor}; reduced security incidents by 40\% and raised code coverage to 95\%.}
+      \resumeItem{Developed, designed API management solution using \textbf{webMethods API Management}, configured \textbf{API Gateway}, hosted APIs on \textbf{API Portal} to showcase clients before deployment; improved client feedback, deployment readiness by 35\%.}
+      \resumeItem{Implemented OAuth 2.0 authentication on the \textbf{webMethods ESB} layer using Authorization Code, Client Credentials, and ROPC grant types by scripting token-lifecycle automation; cut manual configuration errors by 70\% and saved 120 development hours per year.}
+      \resumeItem{Installed and configured \textbf{webMethods Microservices Runtime} across staging and production through scripted deployment pipelines; increased deployment frequency by 50\% and slashed environment-setup time by 60\%.}
+      \resumeItem{Published Article: "Implementing OAuth 2.0 using webMethods Integration Server" | Software AG Tech Community (11.4K+ views)}
+    \resumeItemListEnd
+\vspace{-11pt}
+  \resumeSubheading
+    {Software AG}{Dec 2018 -- Mar 2021}
+    {Integration Consultant, Professional Services}{India}
+    \resumeItemListStart
+      \resumeItem{Developed and supported integration solutions on \textbf{webMethods Digital Business Platform} for a major insurance client by creating middleware interfaces for policy data flows; improved transaction throughput by 45\% and boosted client satisfaction by 20\%.}
+      \resumeItem{Designed, implemented API management solution using \textbf{webMethods API Management}, configured \textbf{API Gateway}, deployed APIs on \textbf{API Portal} to enable clients to review, test APIs prior to deployment; reduced API deployment time by 30\%.}
+      \resumeItem{Resolved critical integration incidents and applied hot-fixes on \textbf{webMethods ESB} by performing 24/7 root-cause analysis; eliminated 98\% of SLA breaches and averted \$80K in penalty costs.}
+      \resumeItem{Containerized integration services by deploying Docker and Kubernetes on IBM Cloud with Prometheus monitoring; improved incident resolution rate to 95\%, reduced downtime by 60\%, and saved \$80K annually.}
+      \resumeItem{Automated testing for 250+ RESTful web services using \textbf{Postman CLI/Newman and JUnit} by scripting test suites; increased coverage by 30\% and reduced manual QA effort by 90\%, saving \$50K yearly.}
+      \resumeItem{Developed Java logging, caching, and configuration libraries by standardizing integration patterns; enhanced developer productivity by 25\%, reduced debugging time by 50\%, and saved \$30K annually.}
+    \resumeItemListEnd
+\vspace{-11pt}
+  \resumeSubheading
+    {Cognizant}{Oct 2016 -- Nov 2018}
+    {Integration Analyst, Enterprise Application Services -- Integration Process Management}{India}
+    \resumeItemListStart
+      \resumeItem{Built 50+ enterprise interfaces using \textbf{webMethods Designer---Flow Services, Java Services, File-Polling, SOAP/REST APIs, and flat-file processing}; enhanced data-exchange reliability by 35\% and reduced end-to-end latency by 40\%.}
+      \resumeItem{Configured Universal Messaging Enterprise Manager for asynchronous pub-sub messaging by creating topics and queues; decoupled systems and reduced message-delivery latency by 30\%.}
+      \resumeItem{Automated integration testing with \textbf{webMethods Unit Test Framework and SOAP-UI} incorporating X.509 authentication for SOAP services; raised test coverage to 90\% and cut post-production defects by 60\%.}
+    \resumeItemListEnd
+\resumeSubHeadingListEnd
+\vspace{-11pt}
+
+%-----------SKILLS-----------
+\section{Skills}
+\resumeItemListStart
+  \resumeItem{\textbf{webMethods Suite}: Integration Server 9.X/10.X, Service Designer 9.X/10.X, API Management Suite (API Gateway, API Portal), Business Rules Engine (MWS), Command Central, wM Deployer, Unit Testing Framework, Universal Messaging, Microservices Runtime}
+  \resumeItem{\textbf{Integration \& Middleware}: webMethods ESB, Enterprise Service Bus design, API orchestration, JSON, XML, RESTful Web Services, SOAP, OAuth 2.0, Symmetric Cryptography}
+  \resumeItem{\textbf{Programming \& Frameworks}: Java (Java Service Development), Python (FastAPI, Django), JavaScript/TypeScript (Node.js), PHP (Laravel), Angular, HTML5, CSS3}
+  \resumeItem{\textbf{Cloud \& DevOps}: AWS, GCP, Azure, Docker, Kubernetes, CI/CD (Git, Maven, Jenkins, GitHub Actions), Postman CLI/Newman}
+  \resumeItem{\textbf{Data Stores \& Messaging}: MySQL, PostgreSQL, MongoDB, Oracle SQL, Firestore, Kafka streams, Universal Messaging (Nirvana)}
+  \resumeItem{\textbf{Testing \& Monitoring}: SOAP-UI, JMeter, JUnit, webMethods Unit Test Executor, Elasticsearch}
+  \resumeItem{\textbf{Other Middleware}: Workato, MuleSoft}
+  \resumeItem{\textbf{Collaboration}: Agile/Scrum, JIRA, cross-functional teaming, sprint planning, backlog refinement}
+\resumeItemListEnd
+\vspace{-8pt}
+
+%-----------PROJECTS-----------
+\section{Projects}
+\resumeSubHeadingListStart
+  \resumeSubheading
+    {RAG-Based FAQ Web Application}{}
+    {Python, Streamlit, LlamaIndex, OpenAI API, Vector Databases}{}
+    \resumeItemListStart
+      \resumeItem{Built scalable backend systems with Python implementing Retrieval-Augmented Generation (RAG) for AI-powered question-answering; designed extensible system architecture supporting document indexing and real-time query processing.}
+      \resumeItem{Developed backend interfaces integrating LlamaIndex and OpenAI APIs for LLM capabilities; implemented vector database indexing with similarity-based retrieval achieving 80\%+ answer accuracy through advanced AI integration.}
+      \resumeItem{Architected document processing pipeline with concurrent PDF handling and vector embeddings; built web interfaces for knowledge workers enabling efficient document analysis and reducing information retrieval time by 75\%.}
+    \resumeItemListEnd
+\vspace{-14pt}
+  \resumeSubheading
+    {Cryptocurrency Analytics Backend}{}
+    {Python, Node.js, PostgreSQL, AWS, System Design}{}
+    \resumeItemListStart
+      \resumeItem{Architected scalable backend systems with extensible system design handling real-time data analysis; implemented database pooling and concurrency patterns supporting millions of data points.}
+      \resumeItem{Built backend interfaces for web and mobile clients with load balancing infrastructure; designed cloud-based scaling solutions reducing API response time by 50\%.}
+      \resumeItem{Integrated third-party APIs with robust backend system design; implemented infrastructure monitoring and performance optimization achieving 99.9\% system uptime.}
+    \resumeItemListEnd
+\vspace{-14pt}
+  \resumeSubheading
+    {FindMyProduct: Shopping Application}{}
+    {Node.js, Kotlin, RESTful APIs, MongoDB, Third-party Integrations}{}
+    \resumeItemListStart
+      \resumeItem{Developed full-stack application with seamless third-party vendor integration; architected RESTful API interfaces for eBay Finding API achieving 25\% improvement in API response time.}
+      \resumeItem{Implemented secure MongoDB database with CRUD RESTful API operations; designed efficient integration architecture enhancing user satisfaction by 30\%.}
+      \resumeItem{Integrated Facebook SDK for social sharing functionalities; demonstrated expertise in multiple third-party vendor integrations and interface requirements documentation.}
+    \resumeItemListEnd
+\resumeSubHeadingListEnd
+\vspace{-11pt}
+
+%-----------CERTIFICATIONS-----------
+\section{Certifications}
+\resumeItemListStart
+  \resumeItem{\textbf{Software AG}: webMethods API Management Professional (SOA), webMethods Integration Developer (SOA), webMethods.io Integration Professional (SOA)}
+  \resumeItem{\textbf{MuleSoft}: Certified Developer -- Level 1 (iPaaS)}
+  \resumeItem{\textbf{Salesforce}: Marketing Cloud Administrator (Automation)}
+  \resumeItem{\textbf{Workato}: Automation Pro -- I \& II (Automation), Proficiency in Building SDK Connectors (Automation)}
+  \resumeItem{\textbf{Microsoft Azure}: Artificial Intelligence Fundamentals (AI-900), Azure Fundamentals (AZ-900)}
+\resumeItemListEnd
+
+\end{document}
