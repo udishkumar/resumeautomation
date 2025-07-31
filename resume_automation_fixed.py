@@ -430,7 +430,7 @@ Return ONLY LaTeX code starting with \\documentclass and ending with \\end{{docu
             # Use Claude to optimize
             message = self.client.messages.create(
                 model=self.model_choice,  # Use selected model
-                max_tokens=4000,
+                max_tokens=8000,
                 temperature=0.3,
                 messages=[{"role": "user", "content": prompt}]
             )
