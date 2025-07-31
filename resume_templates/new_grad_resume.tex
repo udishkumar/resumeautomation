@@ -18,7 +18,7 @@
 \usepackage{tabularx}
 \usepackage{fontawesome5}
 \usepackage{multicol}
-\usepackage{graphicx}%\setmainfont{Times New Roman}
+\usepackage{graphicx}
 \usepackage{ragged2e}  % Add this package for justification
 \setlength{\multicolsep}{-3.0pt}
 \setlength{\columnsep}{-1pt}
@@ -43,31 +43,9 @@
 \colorlet{body}{LightGrey}
 
 %----------FONT OPTIONS----------
-% sans-serif
-% \usepackage[sfdefault]{FiraSans}
-% \usepackage[sfdefault]{roboto}
-% \usepackage[sfdefault]{noto-sans}
-% \usepackage[default]{sourcesanspro}
-
-% \usepackage[T1]{fontenc}
-% \usepackage[T1]{fontenc}
-% \usepackage{cochineal}
-% \usepackage{fourier}
-
-% \usepackage{fontspec}
-% \usepackage{polyglossia}
-% \setmainlanguage{german}
-% \setmainfont{Times New Roman}
-
 % serif
 \usepackage{CormorantGaramond}
 \usepackage{charter}
-
-% \pagestyle{fancy}
-% \fancyhf{}  % clear all header and footer fields
-% \fancyfoot{}
-% \renewcommand{\headrulewidth}{0pt}
-% \renewcommand{\footrulewidth}{0pt}
 
 % Adjust margins
 \addtolength{\oddsidemargin}{-0.6in}
@@ -114,7 +92,6 @@
     \end{tabular*}\vspace{-7pt}
 }
 
-
 \newcommand{\resumeSingleSubheading}[4]{
   \vspace{-2pt}\item
     \begin{tabular*}{1.0\textwidth}[t]{l@{\extracolsep{\fill}}r}
@@ -129,7 +106,6 @@
       \textit{\small#1} & \textit{\small #2} \\
     \end{tabular*}\vspace{-7pt}
 }
-
 
 \newcommand{\resumeProjectHeading}[2]{
     \item
@@ -150,13 +126,11 @@
 
 \newcommand\sbullet[1][.5]{\mathbin{\vcenter{\hbox{\scalebox{#1}{$\bullet$}}}}}
 
-%-------------------------------------------\usepackage{fontspec}
+%-------------------------------------------
 %%%%%%  RESUME STARTS HERE  %%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 
 \begin{document}
 %----------HEADING----------
-
 
 \begin{center}
     {\huge Udish Kumar} \\ \vspace{2pt} 
@@ -164,10 +138,10 @@
     \small{-}
     \href{mailto:udishkum@usc.edu}{\color{blue}{udishkum@usc.edu}} ~ 
     \small{-}
-    \href{https://linkedin.com/in/iudishkumar}{ \color{blue}{linkedin.com/in/iudishkumar}}  ~
+    \href{https://linkedin.com/in/iudishkumar}{\color{blue}{linkedin.com/in/iudishkumar}}  ~
     \small{-}
-    \href{https://github.com/udishkumar}{ \color{blue}{github.com/udishkumar}} ~
-    \vspace{-7pt}
+    \href{https://github.com/udishkumar}{\color{blue}{github.com/udishkumar}} ~
+    \vspace{-1pt}
 \end{center}
 
 %-----------EDUCATION-----------
@@ -209,12 +183,11 @@
       \vspace{1.2pt}
       
      \textbf{\normalsize{Version Control:}}{ \normalsize{Git, GitHub, Bitbucket, AWS Code Commit}}
-
      }}
  \end{itemize}
- \vspace{-16pt}
+ \vspace{-10pt}
  
- %-----------EXPERIENCE-----------
+%-----------EXPERIENCE-----------
 \section{\color{airforceblue}WORK EXPERIENCE}
   \resumeSubHeadingListStart
 
@@ -246,24 +219,22 @@
             \resumeItem{\normalsize{Integrated Firestore for offline support and real-time syncing, reducing data-sync latency by 40\%.}}  
       \resumeItemListEnd  
   \resumeSubHeadingListEnd
-\vspace{-12pt}
+\vspace{-1pt}
 
-
- %-----------PROJECTS-----------
+%-----------PROJECTS-----------
 \section{\color{airforceblue}PROJECTS}    
     \resumeItemListStart
         \vspace{0.5pt}
-        \resumeItem{\justifying\normalsize{\textbf{RAG-Based FAQ Web Application}, Built scalable backend systems with Python implementing Retrieval-Augmented Generation (RAG) for AI-powered question-answering; designed extensible system architecture supporting document indexing and real-time query processing. Developed backend interfaces integrating LlamaIndex and OpenAI APIs for LLM capabilities; implemented vector database indexing with similarity-based retrieval achieving 80\%+ answer accuracy through advanced AI integration. Architected document processing pipeline with concurrent PDF handling and vector embeddings; built web interfaces for knowledge workers enabling efficient document analysis and reducing information retrieval time by 75\%.} }
+        \resumeItem{\justifying\normalsize{\textbf{RAG-Based FAQ Web Application}, Built scalable backend systems with Python implementing Retrieval-Augmented Generation (RAG) for AI-powered question-answering; designed extensible system architecture supporting document indexing and real-time query processing. Developed backend interfaces integrating LlamaIndex and OpenAI APIs for LLM capabilities; implemented vector database indexing with similarity-based retrieval achieving 80\%+ answer accuracy through advanced AI integration. Architected document processing pipeline with concurrent PDF handling and vector embeddings; built web interfaces for knowledge workers enabling efficient document analysis and reducing information retrieval time by 75\%.}}
         \vspace{-5pt}
         
         \resumeItem{\justifying\normalsize{\textbf{CryptoBoard: Your Ultimate Cryptocurrency News \& Sentiment Dashboard}, Designed CryptoBoard's modular Express.js backend (API, service, data layers), accelerating new-source onboarding by 75\%. Implemented cache-aside pattern with Node Cache (1h TTL) and hourly cron jobs, reducing median API latency by 60\%. Optimized data aggregation by orchestrating bulk-fetch of paginated APIs with Promise.all, decreasing processing time by 50\%. Integrated robust retry logic for Axios calls, reducing external API failure rate by 90\% and advanced sentiment analysis and keyword extraction algorithms, enhancing relevance-score accuracy by 30\%.} \href{https://cryptoboard-frontend.onrender.com/}{\color{blue}\underline{Try it!}}}
         \vspace{-5pt}
 
-        \resumeItem{\justifying\normalsize{\textbf{FindMyProduct: Revolutionize Your Shopping Experience}, Developed a robust Kotlin-based Android application for seamless product search and wish-listing, integrating eBay's Finding API for real-time data retrieval and dynamically rendering results via RecyclerView components. Architected and deployed a scalable Node.js backend on Google Cloud Platform (GCP), leveraging the eBay SDK to optimize business logic and API handling, reducing API response time by 25\%. Implemented a secure MongoDB database with CRUD RESTful API operations for efficient user wishlist management, enhancing user satisfaction by 30\%. Integrated the Facebook SDK to enable social sharing functionalities for product posts.}  }
+        \resumeItem{\justifying\normalsize{\textbf{FindMyProduct: Revolutionize Your Shopping Experience}, Developed a robust Kotlin-based Android application for seamless product search and wish-listing, integrating eBay's Finding API for real-time data retrieval and dynamically rendering results via RecyclerView components. Architected and deployed a scalable Node.js backend on Google Cloud Platform (GCP), leveraging the eBay SDK to optimize business logic and API handling, reducing API response time by 25\%. Implemented a secure MongoDB database with CRUD RESTful API operations for efficient user wishlist management, enhancing user satisfaction by 30\%. Integrated the Facebook SDK to enable social sharing functionalities for product posts.}}
         
     \resumeItemListEnd  
    
- \vspace{-12pt}
-%
+\vspace{-1pt}
 
 \end{document}
