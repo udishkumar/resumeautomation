@@ -1,298 +1,90 @@
-%-------------------------
-% Resume in Latex
-% Author : Vaishanth
-% License : MIT
-%------------------------
-
-\documentclass[letterpaper,11pt]{article}
-
-\usepackage{latexsym}
-\usepackage[empty]{fullpage}
-\usepackage{titlesec}
-\usepackage{marvosym}
-\usepackage[usenames,dvipsnames]{color}
-\usepackage{verbatim}
+\documentclass[11pt,a4paper,sans]{moderncv}
+\moderncvstyle{banking}
+\moderncvcolor{blue}
+\usepackage[utf8]{inputenc}
+\usepackage[left=0.75cm,right=0.75cm,top=1cm,bottom=1cm]{geometry} % Maximized content area
 \usepackage{enumitem}
-\usepackage[hidelinks]{hyperref}
-\usepackage[english]{babel}
-\usepackage{tabularx}
-\usepackage{fontawesome5}
-\usepackage{multicol}
-\usepackage{graphicx}%\setmainfont{Times New Roman}
-\usepackage{ragged2e}  % Add this package for justification
-\setlength{\multicolsep}{-3.0pt}
-\setlength{\columnsep}{-1pt}
-\input{glyphtounicode}
 
-\RequirePackage{tikz}
-\RequirePackage{xcolor}
-
-\definecolor{cvblue}{HTML}{0E5484}
-\definecolor{black}{HTML}{130810}
-\definecolor{darkcolor}{HTML}{0F4539}
-\definecolor{cvgreen}{HTML}{3BD80D}
-\definecolor{taggreen}{HTML}{00E278}
-\definecolor{SlateGrey}{HTML}{2E2E2E}
-\definecolor{LightGrey}{HTML}{666666}
-\colorlet{name}{black}
-\colorlet{tagline}{darkcolor}
-\colorlet{heading}{darkcolor}
-\colorlet{headingrule}{cvblue}
-\colorlet{accent}{darkcolor}
-\colorlet{emphasis}{SlateGrey}
-\colorlet{body}{LightGrey}
-
-%----------FONT OPTIONS----------
-% sans-serif
-% \usepackage[sfdefault]{FiraSans}
-% \usepackage[sfdefault]{roboto}
-% \usepackage[sfdefault]{noto-sans}
-% \usepackage[default]{sourcesanspro}
-
-% \usepackage[T1]{fontenc}
-% \usepackage[T1]{fontenc}
-% \usepackage{cochineal}
-% \usepackage{fourier}
-
-% \usepackage{fontspec}
-% \usepackage{polyglossia}
-% \setmainlanguage{german}
-% \setmainfont{Times New Roman}
-
-% serif
-\usepackage{CormorantGaramond}
-\usepackage{charter}
-
-% \pagestyle{fancy}
-% \fancyhf{}  % clear all header and footer fields
-% \fancyfoot{}
-% \renewcommand{\headrulewidth}{0pt}
-% \renewcommand{\footrulewidth}{0pt}
-
-% Adjust margins
-\addtolength{\oddsidemargin}{-0.6in}
-\addtolength{\evensidemargin}{-0.5in}
-\addtolength{\textwidth}{1.19in}
-\addtolength{\topmargin}{-.7in}
-\addtolength{\textheight}{1.4in}
-\urlstyle{same}
-
-\definecolor{airforceblue}{rgb}{0.36, 0.54, 0.66}
-
-\raggedbottom
-\raggedright
-\setlength{\tabcolsep}{0in}
-
-% Sections formatting
-\titleformat{\section}{
-  \vspace{-4pt}\scshape\raggedright\large\bfseries
-}{}{0em}{}[\color{black}\titlerule \vspace{-5pt}]
-
-% Ensure that generate pdf is machine readable/ATS parsable
-\pdfgentounicode=1
-
-%-------------------------
-% Custom commands
-\newcommand{\resumeItem}[1]{
-  \item\small{
-    {#1 \vspace{-1pt}}
-  }
-}
-
-\newcommand{\classesList}[4]{
-    \item\small{
-        {#1 #2 #3 #4 \vspace{-2pt}}
-  }
-}
-
-\newcommand{\resumeSubheading}[4]{
-  \vspace{-2pt}\item
-    \begin{tabular*}{1.0\textwidth}[t]{l@{\extracolsep{\fill}}r}
-      \textbf{\large#1} & \textbf{\small #2} \\
-      \textit{\large#3} & \textit{\small #4} \\
-      
-    \end{tabular*}\vspace{-7pt}
-}
-
-
-\newcommand{\resumeSingleSubheading}[4]{
-  \vspace{-2pt}\item
-    \begin{tabular*}{1.0\textwidth}[t]{l@{\extracolsep{\fill}}r}
-      \textbf{\large#1} & \textbf{\small #2} \\
-      
-    \end{tabular*}\vspace{-7pt}
-}
-
-\newcommand{\resumeSubSubheading}[2]{
-    \item
-    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
-      \textit{\small#1} & \textit{\small #2} \\
-    \end{tabular*}\vspace{-7pt}
-}
-
-
-\newcommand{\resumeProjectHeading}[2]{
-    \item
-    \begin{tabular*}{1.001\textwidth}{l@{\extracolsep{\fill}}r}
-      \small#1 & \textbf{\small #2}\\
-    \end{tabular*}\vspace{-7pt}
-}
-
-\newcommand{\resumeSubItem}[1]{\resumeItem{#1}\vspace{-4pt}}
-
-\renewcommand\labelitemi{$\vcenter{\hbox{\tiny$\bullet$}}$}
-\renewcommand\labelitemii{$\vcenter{\hbox{\tiny$\bullet$}}$}
-
-\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0.0in, label={}]}
-\newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
-\newcommand{\resumeItemListStart}{\begin{itemize}[leftmargin=0.1in]}
-\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-5pt}}
-
-\newcommand\sbullet[1][.5]{\mathbin{\vcenter{\hbox{\scalebox{#1}{$\bullet$}}}}}
-
-%-------------------------------------------\usepackage{fontspec}
-%%%%%%  RESUME STARTS HERE  %%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+\name{Udish}{Kumar}
+\title{Senior API Engineer \& App Integration Specialist}
+\address{San Francisco}{CA}{USA}
+\phone[mobile]{+1~(213)~272-3355}
+\email{udishkum@usc.edu}
+\homepage{linkedin.com/in/iudishkumar}
 
 \begin{document}
-%----------HEADING----------
+\makecvtitle
 
+\section{Professional Summary}
+\cvitem{}{\textbf{Senior Full Stack API Engineer \& App Integration Specialist} with \textbf{5+ years} architecting scalable enterprise APIs, microservices, and integration solutions. Expert in designing high-performance \textbf{RESTful APIs, API Gateways, and microservices architectures} on AWS and GCP. Proven track record of delivering \textbf{\$3.2M+ in revenue growth} through payment integrations and API optimizations while reducing operational costs by \textbf{\$500K+} via strategic API migrations and automation.}
 
-\begin{center}
-    {\huge Udish Kumar} \\ \vspace{2pt} 
-    {+1 (213) 272-3355} ~ 
-    \small{-}
-    \href{mailto:udishkum@usc.edu}{\color{blue}{udishkum@usc.edu}} ~ 
-    \small{-}
-    \href{https://linkedin.com/in/iudishkumar}{ \color{blue}{linkedin.com/in/iudishkumar}}  ~
-    \small{-}
-    San Francisco, CA ~
-    \vspace{-7pt}
-\end{center}
+\section{Technical Skills}
+\cvitem{API \& Integration}{\textbf{RESTful APIs, GraphQL, SOAP, API Gateway, Microservices}, ProtoBuf, webMethods Digital Business Platform, OAuth 2.0, API Management, Webhook Processing}
+\cvitem{Backend \& Frameworks}{\textbf{Node.js, Express.js, FastAPI, Django, Python, Java}, Kotlin, PHP, Spring Boot, Middleware Development}
+\cvitem{Frontend \& Full Stack}{\textbf{Next.js, React.js, JavaScript (ES6+)}, TypeScript, HTML5, CSS3, Responsive Design}
+\cvitem{Cloud \& DevOps}{\textbf{Amazon Web Services (AWS), Google Cloud Platform (GCP)}, Docker, Kubernetes, CI/CD Pipelines, GitHub Actions, Jenkins}
+\cvitem{Databases \& Storage}{\textbf{PostgreSQL, MongoDB, DynamoDB, Oracle SQL}, Firestore, Redis, Database Design, Query Optimization}
+\cvitem{Payment \& E-commerce APIs}{Razorpay API, Stripe, PayPal, eBay Finding API, eBay SDK, Salesforce Marketing Cloud API}
+\cvitem{AI/ML \& Data}{\textbf{OpenAI API, LlamaIndex, Vector Databases, RAG}, Streamlit, Data Processing, Machine Learning Pipelines}
+\cvitem{Testing \& Quality}{\textbf{Postman, Newman, JUnit, SOAP-UI}, Automated Testing, Unit Testing, Integration Testing, API Documentation}
+\cvitem{Mobile Development}{Android SDK, Firebase Auth, Firebase Analytics, MVVM Architecture, Clean Architecture}
 
-%-----------PROFESSIONAL SUMMARY-----------
-\section{\color{airforceblue}PROFESSIONAL SUMMARY}
-\justifying
-\normalsize{Results-driven Full Stack Engineer with 5+ years architecting scalable enterprise solutions and driving digital transformations. Expert in designing high-performance APIs, microservices architectures, and cloud-native applications on AWS and GCP. Proven track record of delivering \$3.2M+ in revenue growth while reducing operational costs by \$500K+ through strategic technology migrations and process optimization. Skilled in modern frameworks (React, Next.js, FastAPI), mobile development (Android/Kotlin), and emerging technologies including AI/ML integration. USC MS Computer Science graduate combining technical excellence with business acumen to lead cross-functional teams and deliver innovative solutions that exceed stakeholder expectations.}
-\raggedright
-\vspace{-10pt}
+\section{Experience}
+\cventry{Jan 2025--June 2025}{Full Stack Engineer}{Sumeru Inc}{Los Angeles, CA}{}{
+\begin{itemize}[leftmargin=0.4cm]
+\item Designed and implemented payment and webhook integrations for Razorpay by developing an AWS-hosted \textbf{Next.js frontend and Node.js backend}; achieved 99\% transaction reliability and generated \textbf{\$3.2M in incremental annual revenue}
+\item Migrated Sumeru's legacy WordPress site to Next.js; reduced page-load times by 40\%, cut hosting costs by \textbf{\$98K/year}, and boosted organic traffic by 30\%
+\end{itemize}}
 
-%-----------EDUCATION-----------
-\section{\color{airforceblue}EDUCATION}
-  \resumeSubHeadingListStart
-    \resumeSubheading
-      {University of Southern California}{Los Angeles, CA, USA}
-      {Master of Science in Computer Science}{Jan 2023 - Dec 2024}
-    \vspace{-4pt}
-     \resumeSubheading
-      {Punjab Technical University}{Punjab, India}
-      {Bachelor of Technology in Computer Science \& Engineering}{Aug 2012 - Jul 2016}
-  \resumeSubHeadingListEnd
-  \vspace{-10pt}
+\cventry{Nov 2021--Dec 2022}{Lead Engineer}{Apisero Inc}{Remote}{}{
+\begin{itemize}[leftmargin=0.4cm]
+\item Designed and deployed \textbf{FastAPI microservices} to replace MuleSoft ESB integrations on AWS by defining JSON/XML schemas and RESTful endpoints; eliminated \textbf{\$150K in annual licensing fees} and boosted API throughput by 60\%
+\item Developed an Operational Data Store platform by integrating ResourceGuru, Greenhouse, and Zoho via Django APIs and AWS services; reduced data-availability latency from hours to minutes, improved data integrity by 80\%, and saved \textbf{\$75K annually}
+\item Implemented CI/CD pipelines using Git, Maven, and Jenkins by automating testing and deployment workflows; increased release frequency to bi-weekly and reduced post-release defects by 50\%
+\end{itemize}}
 
-%-----------PROGRAMMING SKILLS-----------
-\section{\color{airforceblue}TECHNICAL SKILLS}
- \begin{itemize}[leftmargin=0in, label={}]
-    \small{\item{
-     \textbf{\normalsize{Programming Languages:}}{ \normalsize{Python, Kotlin, JavaScript (Node.js, ES6+), Java, PHP}} \\
-      \vspace{1.2pt}
-      
-     \textbf{\normalsize{Web Frameworks \& Libraries:}}{ \normalsize{Node.js, Express.js, Next.js, React.js, FastAPI, Django, Axios, Node Cache}} \\
-      \vspace{1.2pt}
-      
-     \textbf{\normalsize{AI/ML \& Data:}}{ \normalsize{LlamaIndex, OpenAI API, Vector Databases, Retrieval-Augmented Generation (RAG), Streamlit}} \\
-      \vspace{1.2pt}
-      
-     \textbf{\normalsize{Mobile Development:}}{ \normalsize{MVVM, Clean Architecture, RecyclerView, Android SDK, Facebook SDK, Google Analytics, Firebase Analytics, Firebase Auth}} \\
-      \vspace{1.2pt}
-      
-     \textbf{\normalsize{Cloud Platforms:}}{ \normalsize{Amazon Web Services (AWS), Google Cloud Platform (GCP)}} \\
-      \vspace{1.2pt}
-      
-     \textbf{\normalsize{Databases:}}{ \normalsize{Oracle SQL, MongoDB, PostgreSQL, DynamoDB, Firestore}} \\
-      \vspace{1.2pt}
-      
-     \textbf{\normalsize{API \& Integration Technologies:}}{ \normalsize{RESTful APIs, SOAP, ProtoBuf, webMethods Digital Business Platform (Integration Server, API Management, API Gateway, API Portal, Universal Messaging), eBay Finding API, eBay SDK, Razorpay API, Salesforce Marketing Cloud API}} \\
-      \vspace{1.2pt}
-      
-     \textbf{\normalsize{DevOps \& CI/CD:}}{ \normalsize{GitHub Actions, Jenkins, Git, JIRA, CI/CD Pipelines, Git Branching Strategies, Automated Testing (JUnit, Postman CLI/Newman, webMethods Unit Test Executor, SOAP-UI)}} \\
-      \vspace{1.2pt}
-      
-     \textbf{\normalsize{Agile Methodologies:}}{ \normalsize{(Scrum, Sprints), Postman, Swagger/OpenAPI}}
+\cventry{Apr 2021--Oct 2021}{Senior Software Engineer}{PricewaterhouseCoopers LLP}{India}{}{
+\begin{itemize}[leftmargin=0.4cm]
+\item Built middleware framework on webMethods Digital Business Platform by developing logging, caching, configuration-management, and PDF-generation utilities; accelerated integration development speed by 30\%, saving \textbf{\$50K annually}
+\item Designed and implemented encrypted API payload flows on webMethods Integration Server using symmetric cryptography and automated testing via webMethods Unit Test Executor; reduced security incidents by 40\% and raised code coverage to \textbf{95\%}
+\item Developed API management solution using webMethods API Management, configured API Gateway, hosted APIs on API Portal to showcase clients before deployment; improved client feedback, deployment readiness by 35\%
+\item Implemented OAuth 2.0 authentication on the webMethods ESB layer using Authorization Code, Client Credentials, and ROPC grant types by scripting token-lifecycle automation; cut manual configuration errors by 70\% and saved \textbf{120 development hours per year}
+\end{itemize}}
 
-     }}
- \end{itemize}
- \vspace{-16pt}
- 
- %-----------EXPERIENCE-----------
-\section{\color{airforceblue}WORK EXPERIENCE}
-  \resumeSubHeadingListStart
+\cventry{Dec 2018--Mar 2021}{Associate Software Engineer}{Software AG}{India}{}{
+\begin{itemize}[leftmargin=0.4cm]
+\item Developed and supported integration solutions on webMethods Digital Business Platform for a major insurance client by creating middleware interfaces for policy data flows; improved transaction throughput by 45\% and boosted client satisfaction by 20\%
+\item Designed, implemented API management solution using webMethods API Management, configured API Gateway, deployed APIs on API Portal to enable clients to review, test APIs prior to deployment; reduced API deployment time by 30\%
+\item Resolved critical integration incidents and applied hot-fixes on webMethods ESB by performing 24/7 root-cause analysis; eliminated 98\% of SLA breaches and averted \textbf{\$80K in penalty costs}
+\item Automated testing for 250+ RESTful web services using Postman CLI/Newman and JUnit by scripting test suites; increased coverage by 30\% and reduced manual QA effort by 90\%, saving \textbf{\$50K yearly}
+\end{itemize}}
 
-    \resumeSubheading
-      {Full Stack Engineer}{} 
-      {Sumeru Inc, Los Angeles, CA}{Jan 2025 - June 2025}
-      \resumeItemListStart
-            \resumeItem{\normalsize{Designed and implemented payment and webhook integrations for Razorpay by developing an AWS-hosted Next.js frontend and Node.js backend; achieved 99\% transaction reliability and generated \$3.2M in incremental annual revenue.}}
-            \resumeItem{\normalsize{Migrated Sumeru's legacy WordPress site to Next.js; reduced page-load times by 40\%, cut hosting costs by \$98K/year, and boosted organic traffic by 30\%.}}  
-      \resumeItemListEnd  
+\cventry{Oct 2016--Nov 2018}{Developer Trainee}{Cognizant}{India}{}{
+\begin{itemize}[leftmargin=0.4cm]
+\item Built 50+ enterprise interfaces using webMethods Designer---Flow Services, Java Services, File-Polling, SOAP/REST APIs, and flat-file processing; enhanced data-exchange reliability by 35\% and reduced end-to-end latency by 40\%
+\item Configured Universal Messaging Enterprise Manager for asynchronous pub-sub messaging by creating topics and queues; decoupled systems and reduced message-delivery latency by 30\%
+\item Automated integration testing with webMethods Unit Test Framework and SOAP-UI incorporating X.509 authentication for SOAP services; raised test coverage to 90\% and cut post-production defects by 60\%
+\end{itemize}}
 
-    \resumeSubheading
-      {Lead Engineer}{} 
-      {Apisero Inc, Remote}{Nov 2021 - Dec 2022}
-      \resumeItemListStart
-            \resumeItem{\normalsize{Designed and deployed FastAPI microservices to replace MuleSoft ESB integrations on AWS by defining JSON/XML schemas and RESTful endpoints; eliminated \$150K in annual licensing fees and boosted API throughput by 60\%.}}
-            \resumeItem{\normalsize{Developed an Operational Data Store platform by integrating ResourceGuru, Greenhouse, and Zoho via Django APIs and AWS services; reduced data-availability latency from hours to minutes, improved data integrity by 80\%, and saved \$75K annually.}}  
-            \resumeItem{\normalsize{Implemented CI/CD pipelines using Git, Maven, and Jenkins by automating testing and deployment workflows; increased release frequency to bi-weekly and reduced post-release defects by 50\%.}}  
-      \resumeItemListEnd  
+\section{Education}
+\cventry{Jan 2023--Dec 2024}{Master of Science in Computer Science}{University of Southern California}{Los Angeles, CA}{}{}
+\cventry{Aug 2012--Jul 2016}{Bachelor of Technology in Computer Science \& Engineering}{Punjab Technical University}{Punjab, India}{}{}
 
-    \resumeSubheading
-      {Senior Software Engineer}{} 
-      {PricewaterhouseCoopers LLP, India}{Apr 2021 - Oct 2021}
-      \resumeItemListStart
-            \resumeItem{\normalsize{Built middleware framework on webMethods Digital Business Platform by developing logging, caching, configuration-management, and PDF-generation utilities; accelerated integration development speed by 30\%, saving \$50K annually.}}
-            \resumeItem{\normalsize{Designed and implemented encrypted API payload flows on webMethods Integration Server using symmetric cryptography and automated testing via webMethods Unit Test Executor; reduced security incidents by 40\% and raised code coverage to 95\%.}}  
-            \resumeItem{\normalsize{Developed, designed API management solution using webMethods API Management, configured API Gateway, hosted APIs on API Portal to showcase clients before deployment; improved client feedback, deployment readiness by 35\%.}}
-            \resumeItem{\normalsize{Implemented OAuth 2.0 authentication on the webMethods ESB layer using Authorization Code, Client Credentials, and ROPC grant types by scripting token-lifecycle automation; cut manual configuration errors by 70\% and saved 120 development hours per year.}}  
-      \resumeItemListEnd  
+\section{Projects}
+\cvitem{RAG-Based FAQ Web Application}{
+\begin{itemize}[leftmargin=0.4cm]
+\item Built scalable backend systems with Python implementing \textbf{Retrieval-Augmented Generation (RAG)} for AI-powered question-answering; designed extensible system architecture supporting document indexing and real-time query processing
+\item Developed backend interfaces integrating \textbf{LlamaIndex and OpenAI APIs} for LLM capabilities; implemented vector database indexing with similarity-based retrieval achieving 80\%+ answer accuracy through advanced AI integration
+\item Architected document processing pipeline with concurrent PDF handling and vector embeddings; built web interfaces for knowledge workers enabling efficient document analysis and reducing information retrieval time by \textbf{75\%}
+\end{itemize}}
 
-    \resumeSubheading
-      {Associate Software Engineer}{} 
-      {Software AG, India}{Dec 2018 - Mar 2021}
-      \resumeItemListStart
-            \resumeItem{\normalsize{Developed and supported integration solutions on webMethods Digital Business Platform for a major insurance client by creating middleware interfaces for policy data flows; improved transaction throughput by 45\% and boosted client satisfaction by 20\%.}}
-            \resumeItem{\normalsize{Designed, implemented API management solution using webMethods API Management, configured API Gateway, deployed APIs on API Portal to enable clients to review, test APIs prior to deployment; reduced API deployment time by 30\%.}}  
-            \resumeItem{\normalsize{Resolved critical integration incidents and applied hot-fixes on webMethods ESB by performing 24/7 root-cause analysis; eliminated 98\% of SLA breaches and averted \$80K in penalty costs.}}
-            \resumeItem{\normalsize{Automated testing for 250+ RESTful web services using Postman CLI/Newman and JUnit by scripting test suites; increased coverage by 30\% and reduced manual QA effort by 90\%, saving \$50K yearly.}}  
-      \resumeItemListEnd  
-
-    \resumeSubheading
-      {Developer Trainee}{} 
-      {Cognizant, India}{Oct 2016 - Nov 2018}
-      \resumeItemListStart
-            \resumeItem{\normalsize{Built 50+ enterprise interfaces using webMethods Designer---Flow Services, Java Services, File-Polling, SOAP/REST APIs, and flat-file processing; enhanced data-exchange reliability by 35\% and reduced end-to-end latency by 40\%.}}
-            \resumeItem{\normalsize{Configured Universal Messaging Enterprise Manager for asynchronous pub-sub messaging by creating topics and queues; decoupled systems and reduced message-delivery latency by 30\%.}}  
-            \resumeItem{\normalsize{Automated integration testing with webMethods Unit Test Framework and SOAP-UI incorporating X.509 authentication for SOAP services; raised test coverage to 90\% and cut post-production defects by 60\%.}}  
-      \resumeItemListEnd  
-
-  \resumeSubHeadingListEnd
-\vspace{-12pt}
-
-
- %-----------PROJECTS-----------
-\section{\color{airforceblue}PROJECTS}    
-    \resumeItemListStart
-        \vspace{0.5pt}
-        \resumeItem{\justifying\normalsize{\textbf{RAG-Based FAQ Web Application}, Built scalable backend systems with Python implementing Retrieval-Augmented Generation (RAG) for AI-powered question-answering; designed extensible system architecture supporting document indexing and real-time query processing. Developed backend interfaces integrating LlamaIndex and OpenAI APIs for LLM capabilities; implemented vector database indexing with similarity-based retrieval achieving 80\%+ answer accuracy through advanced AI integration. Architected document processing pipeline with concurrent PDF handling and vector embeddings; built web interfaces for knowledge workers enabling efficient document analysis and reducing information retrieval time by 75\%.}}
-        \vspace{-5pt}
-        
-        \resumeItem{\justifying\normalsize{\textbf{CryptoBoard: Your Ultimate Cryptocurrency News \& Sentiment Dashboard}, Designed CryptoBoard's modular Express.js backend (API, service, data layers), accelerating new-source onboarding by 75\%. Implemented cache-aside pattern with Node Cache (1h TTL) and hourly cron jobs, reducing median API latency by 60\%. Optimized data aggregation by orchestrating bulk-fetch of paginated APIs with Promise.all, decreasing processing time by 50\%. Integrated robust retry logic for Axios calls, reducing external API failure rate by 90\% and advanced sentiment analysis and keyword extraction algorithms, enhancing relevance-score accuracy by 30\%.} \href{https://cryptoboard-frontend.onrender.com/}{\color{blue}\underline{Try it!}}}
-        \vspace{-5pt}
-
-        \resumeItem{\justifying\normalsize{\textbf{FindMyProduct: Revolutionize Your Shopping Experience}, Developed a robust Kotlin-based Android application for seamless product search and wish-listing, integrating eBay's Finding API for real-time data retrieval and dynamically rendering results via RecyclerView components. Architected and deployed a scalable Node.js backend on Google Cloud Platform (GCP), leveraging the eBay SDK to optimize business logic and API handling, reducing API response time by 25\%. Implemented a secure MongoDB database with CRUD RESTful API operations for efficient user wishlist management, enhancing user satisfaction by 30\%. Integrated the Facebook SDK to enable social sharing functionalities for product posts.}}
-        
-    \resumeItemListEnd  
-   
- \vspace{-12pt}
-%
+\cvitem{CryptoBoard Dashboard}{
+\begin{itemize}[leftmargin=0.4cm]
+\item Designed CryptoBoard's modular Express.js backend (API, service, data layers), accelerating new-source onboarding by 75\%
+\item Implemented cache-aside pattern with Node Cache (1h TTL) and hourly cron jobs, reducing median API latency by 60\%
+\item Optimized data aggregation by orchestrating bulk-fetch of paginated APIs with Promise.all, decreasing processing time by 50\%
+\item Integrated robust retry logic for Axios calls, reducing external API failure rate by 90\% and advanced sentiment analysis and keyword extraction algorithms, enhancing relevance-score accuracy by 30\%
+\item \textbf{Live Demo:} \href{https://cryptoboard-frontend.onrender.com/}{https://cryptoboard-frontend.onrender.com/}
+\end{itemize}}
 
 \end{document}

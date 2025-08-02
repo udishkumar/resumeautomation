@@ -1,280 +1,91 @@
-%-------------------------
-% Resume in Latex
-% Author : Vaishanth
-% License : MIT
-%------------------------
-
-\documentclass[letterpaper,11pt]{article}
-
-\usepackage{latexsym}
-\usepackage[empty]{fullpage}
-\usepackage{titlesec}
-\usepackage{marvosym}
-\usepackage[usenames,dvipsnames]{color}
-\usepackage{verbatim}
+\documentclass[11pt,a4paper,sans]{moderncv}
+\moderncvstyle{banking}
+\moderncvcolor{blue}
+\usepackage[utf8]{inputenc}
+\usepackage[left=0.75cm,right=0.75cm,top=1cm,bottom=1cm]{geometry} % Maximized content area
 \usepackage{enumitem}
-\usepackage[hidelinks]{hyperref}
-\usepackage[english]{babel}
-\usepackage{tabularx}
-\usepackage{fontawesome5}
-\usepackage{multicol}
-\usepackage{graphicx}%\setmainfont{Times New Roman}
-\setlength{\multicolsep}{-3.0pt}
-\setlength{\columnsep}{-1pt}
-\input{glyphtounicode}
 
-\RequirePackage{tikz}
-\RequirePackage{xcolor}
-
-\definecolor{cvblue}{HTML}{0E5484}
-\definecolor{black}{HTML}{130810}
-\definecolor{darkcolor}{HTML}{0F4539}
-\definecolor{cvgreen}{HTML}{3BD80D}
-\definecolor{taggreen}{HTML}{00E278}
-\definecolor{SlateGrey}{HTML}{2E2E2E}
-\definecolor{LightGrey}{HTML}{666666}
-\colorlet{name}{black}
-\colorlet{tagline}{darkcolor}
-\colorlet{heading}{darkcolor}
-\colorlet{headingrule}{cvblue}
-\colorlet{accent}{darkcolor}
-\colorlet{emphasis}{SlateGrey}
-\colorlet{body}{LightGrey}
-
-%----------FONT OPTIONS----------
-% sans-serif
-% \usepackage[sfdefault]{FiraSans}
-% \usepackage[sfdefault]{roboto}
-% \usepackage[sfdefault]{noto-sans}
-% \usepackage[default]{sourcesanspro}
-
-% \usepackage[T1]{fontenc}
-% \usepackage[T1]{fontenc}
-% \usepackage{cochineal}
-% \usepackage{fourier}
-
-% \usepackage{fontspec}
-% \usepackage{polyglossia}
-% \setmainlanguage{german}
-% \setmainfont{Times New Roman}
-
-% serif
-\usepackage{CormorantGaramond}
-\usepackage{charter}
-
-% \pagestyle{fancy}
-% \fancyhf{}  % clear all header and footer fields
-% \fancyfoot{}
-% \renewcommand{\headrulewidth}{0pt}
-% \renewcommand{\footrulewidth}{0pt}
-
-% Adjust margins
-\addtolength{\oddsidemargin}{-0.6in}
-\addtolength{\evensidemargin}{-0.5in}
-\addtolength{\textwidth}{1.19in}
-\addtolength{\topmargin}{-.7in}
-\addtolength{\textheight}{1.4in}
-\urlstyle{same}
-
-\definecolor{airforceblue}{rgb}{0.36, 0.54, 0.66}
-
-\raggedbottom
-\raggedright
-\setlength{\tabcolsep}{0in}
-
-% Sections formatting
-\titleformat{\section}{
-  \vspace{-4pt}\scshape\raggedright\large\bfseries
-}{}{0em}{}[\color{black}\titlerule \vspace{-5pt}]
-
-% Ensure that generate pdf is machine readable/ATS parsable
-\pdfgentounicode=1
-
-%-------------------------
-% Custom commands
-\newcommand{\resumeItem}[1]{
-  \item\small{
-    {#1 \vspace{-1pt}}
-  }
-}
-
-\newcommand{\classesList}[4]{
-    \item\small{
-        {#1 #2 #3 #4 \vspace{-2pt}}
-  }
-}
-
-\newcommand{\resumeSubheading}[4]{
-  \vspace{-2pt}\item
-    \begin{tabular*}{1.0\textwidth}[t]{l@{\extracolsep{\fill}}r}
-      \textbf{\large#1} & \textbf{\small #2} \\
-      \textit{\large#3} & \textit{\small #4} \\
-      
-    \end{tabular*}\vspace{-7pt}
-}
-
-
-\newcommand{\resumeSingleSubheading}[4]{
-  \vspace{-2pt}\item
-    \begin{tabular*}{1.0\textwidth}[t]{l@{\extracolsep{\fill}}r}
-      \textbf{\large#1} & \textbf{\small #2} \\
-      
-    \end{tabular*}\vspace{-7pt}
-}
-
-\newcommand{\resumeSubSubheading}[2]{
-    \item
-    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
-      \textit{\small#1} & \textit{\small #2} \\
-    \end{tabular*}\vspace{-7pt}
-}
-
-
-\newcommand{\resumeProjectHeading}[2]{
-    \item
-    \begin{tabular*}{1.001\textwidth}{l@{\extracolsep{\fill}}r}
-      \small#1 & \textbf{\small #2}\\
-    \end{tabular*}\vspace{-7pt}
-}
-
-\newcommand{\resumeSubItem}[1]{\resumeItem{#1}\vspace{-4pt}}
-
-\renewcommand\labelitemi{$\vcenter{\hbox{\tiny$\bullet$}}$}
-\renewcommand\labelitemii{$\vcenter{\hbox{\tiny$\bullet$}}$}
-
-\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0.0in, label={}]}
-\newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
-\newcommand{\resumeItemListStart}{\begin{itemize}[leftmargin=0.1in]}
-\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-5pt}}
-
-\newcommand\sbullet[1][.5]{\mathbin{\vcenter{\hbox{\scalebox{#1}{$\bullet$}}}}}
-
-%-------------------------------------------\usepackage{fontspec}
-%%%%%%  RESUME STARTS HERE  %%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+\name{Udish}{Kumar}
+\title{Full Stack API Specialist}
+\address{San Francisco}{CA}{USA}
+\phone[mobile]{+1~(213)~272-3355}
+\email{udishkum@usc.edu}
+\homepage{linkedin.com/in/iudishkumar}
 
 \begin{document}
-%----------HEADING----------
+\makecvtitle
+
+\section{Professional Summary}
+\cvitem{}{\textbf{New Graduate Full Stack Web \& Mobile App Engineer} with \textbf{API specialization} and hands-on experience building end-to-end solutions across web, mobile, and backend systems. Proficient in developing scalable \textbf{React/Next.js web applications}, \textbf{Android mobile apps}, and high-performance \textbf{RESTful APIs and microservices} on AWS/GCP. Demonstrated impact through internships and projects and proven ability to deliver production-ready applications with modern development practices.}
+
+\section{Education}
+\cventry{Jan 2023--Dec 2024}{Master of Science in Computer Science}{University of Southern California}{Los Angeles, CA}{}{}
+
+\section{Technical Skills}
+\cvitem{Full Stack Web Development}{\textbf{Next.js, React.js, JavaScript (ES6+), TypeScript}, HTML5, CSS3, Tailwind CSS, Responsive Design, SEO Optimization}
+\cvitem{Mobile App Development}{\textbf{Android SDK, Kotlin, MVVM Architecture, Clean Architecture}, Firebase Auth, Firebase Analytics, RecyclerView, ProtoBuf}
+\cvitem{API \& Backend Engineering}{\textbf{RESTful APIs, GraphQL, FastAPI, Node.js, Express.js}, SOAP, API Gateway, Microservices, OAuth 2.0, API Management, Webhook Processing}
+\cvitem{Programming Languages}{\textbf{Python, Kotlin, JavaScript, Java}, PHP, TypeScript}
+\cvitem{Cloud \& DevOps}{\textbf{Amazon Web Services (AWS), Google Cloud Platform (GCP)}, Docker, Kubernetes, CI/CD Pipelines, GitHub Actions, Jenkins, Git Branching Strategies}
+\cvitem{Databases \& Storage}{\textbf{PostgreSQL, MongoDB, DynamoDB, Firestore}, Oracle SQL, Redis, Database Design, Query Optimization}
+\cvitem{Payment \& E-commerce APIs}{Razorpay API, Stripe, PayPal, eBay Finding API, eBay SDK, Salesforce Marketing Cloud API}
+\cvitem{AI/ML \& Data}{\textbf{OpenAI API, LlamaIndex, Vector Databases, RAG}, Streamlit, Data Processing, Machine Learning Pipelines, Sentiment Analysis}
+\cvitem{Testing \& Quality}{\textbf{Postman, Newman, JUnit, SOAP-UI}, Automated Testing, Unit Testing, Integration Testing, API Documentation}
+
+\section{Projects}
+\cvitem{RAG-Based FAQ Web Application}{
+\begin{itemize}[leftmargin=0.4cm]
+\item Built scalable backend systems with Python implementing \textbf{Retrieval-Augmented Generation (RAG)} for AI-powered question-answering; designed extensible system architecture supporting document indexing and real-time query processing
+\item Developed backend interfaces integrating \textbf{LlamaIndex and OpenAI APIs} for LLM capabilities; implemented vector database indexing with similarity-based retrieval achieving \textbf{80\%+ answer accuracy} through advanced AI integration
+\item Architected document processing pipeline with concurrent PDF handling and vector embeddings; built web interfaces for knowledge workers enabling efficient document analysis and reducing information retrieval time by \textbf{75\%}
+\end{itemize}}
+
+\cvitem{CryptoBoard: Ultimate Cryptocurrency News \& Sentiment Dashboard}{
+\begin{itemize}[leftmargin=0.4cm]
+\item Designed CryptoBoard's modular \textbf{Express.js backend} (API, service, data layers), accelerating new-source onboarding by \textbf{75\%}
+\item Implemented cache-aside pattern with Node Cache (1h TTL) and hourly cron jobs, reducing median API latency by \textbf{60\%}
+\item Optimized data aggregation by orchestrating bulk-fetch of paginated APIs with Promise.all, decreasing processing time by \textbf{50\%}
+\item Integrated robust retry logic for Axios calls, reducing external API failure rate by \textbf{90\%} and advanced sentiment analysis and keyword extraction algorithms, enhancing relevance-score accuracy by \textbf{30\%}
+\item \textbf{Live Demo:} \href{https://cryptoboard-frontend.onrender.com/}{https://cryptoboard-frontend.onrender.com/}
+\end{itemize}}
+
+\cvitem{FindMyProduct: Revolutionize Your Shopping Experience}{
+\begin{itemize}[leftmargin=0.4cm]
+\item Developed a robust \textbf{Kotlin-based Android application} for seamless product search and wish-listing, integrating \textbf{eBay's Finding API} for real-time data retrieval and dynamically rendering results via RecyclerView components
+\item Architected and deployed a scalable \textbf{Node.js backend on Google Cloud Platform (GCP)}, leveraging the eBay SDK to optimize business logic and API handling, reducing API response time by \textbf{25\%}
+\item Implemented a secure \textbf{MongoDB database with CRUD RESTful API} operations for efficient user wishlist management, enhancing user satisfaction by \textbf{30\%}
+\item Integrated the \textbf{Facebook SDK} to enable social sharing functionalities for product posts
+\end{itemize}}
 
 
-\begin{center}
-    {\huge Udish Kumar} \\ \vspace{2pt} 
-    {+1 (213) 272-3355} ~ 
-    \small{-}
-    \href{https://github.com/udishkumar}{\color{blue}{Portfolio}} ~ 
-    \small{-}
-    \href{mailto:udishkum@usc.edu}{\color{blue}{udishkum@usc.edu}} ~ 
-    \small{-}
-    \href{https://linkedin.com/in/iudishkumar}{ \color{blue}{linkedin.com/in/iudishkumar}}  ~
-    \small{-}
-    \href{https://github.com/udishkumar}{ \color{blue}{github.com/udishkumar}} ~
-    \vspace{-7pt}
-\end{center}
+\section{Experience}
+\cventry{Jan 2025--June 2025}{Software Engineer}{Sumeru Inc}{Los Angeles, CA}{}{
+\begin{itemize}[leftmargin=0.4cm]
+\item Revamped Art of Living's Jyotish Vastu Academy website front end: migrated PHP Laravel to \textbf{Next.js}; developed high-traffic consumer platform on \textbf{AWS with scalable microservices}; integrated \textbf{Razorpay payment webhooks}---achieved \textbf{4X revenue increase} within two months (≈\textbf{\$120K incremental})
+\item Established standardized \textbf{Git branching strategy and JIRA-driven sprint process}: defined branching conventions, enforced pull-request workflows, trained cross-functional teams---accelerated feature delivery 40\%, improved engineering--product collaboration 30\%
+\item Partnered with Marketing \& QA teams: automated \textbf{Salesforce Marketing Cloud} email campaigns and workflows; architected backend logic, built automated test suites in Jenkins---ensured on-time campaigns, zero critical issues; reduced manual testing hours 75\% (≈\textbf{\$45K annual savings})
+\item Led migration of legacy WordPress site to Next.js: refactored API endpoints, enhanced SEO metadata, modularized backend services---boosted organic search traffic 50\%, reduced ongoing maintenance costs 25\%
+\end{itemize}}
 
-%-----------EDUCATION-----------
-\section{\color{airforceblue}EDUCATION}
-  \resumeSubHeadingListStart
-    \resumeSubheading
-      {University of Southern California}{Los Angeles, CA, USA}
-      {Master of Science in Computer Science}{Jan 2023 - Dec 2024}
-    \vspace{-4pt}
-  \resumeSubHeadingListEnd
-  \vspace{-10pt}
+\cventry{Aug 2024--Dec 2024}{Software Engineer (Co-op)}{Tikr Media Inc}{Santa Monica, CA}{}{
+\begin{itemize}[leftmargin=0.4cm]
+\item Developed \textbf{Android counterpart} of Series A iOS app in \textbf{Kotlin using MVVM \& Clean Architecture}---expanded reach 45\%, unlocked \textbf{\$500K net annual revenue}
+\item Designed \textbf{ProtoBuf implementation} for critical APIs (createAccount, signin, AuthWithToken), deploying to Buf Schema Registry and reducing serialization overhead by \textbf{70\%}
+\item Built \& maintained \textbf{CI/CD pipeline} using GitHub Actions with branching model aligned to sprint cycles---cut Play Store deployment time \textbf{90\%}
+\end{itemize}}
 
-%-----------PROGRAMMING SKILLS-----------
-\section{\color{airforceblue}TECHNICAL SKILLS}
- \begin{itemize}[leftmargin=0in, label={}]
-    \small{\item{
-     \textbf{\normalsize{Programming Languages:}}{ \normalsize{Python, Kotlin, JavaScript (Node.js, ES6+), Java, PHP}} \\
-      \vspace{1.2pt}
-      
-     \textbf{\normalsize{Frameworks \& Libraries:}}{ \normalsize{Node.js, Express.js, Next.js, React.js, FastAPI, Laravel, Axios, Node Cache, Junit, Tailwind CSS}} \\
-      \vspace{1.2pt}
-      
-     \textbf{\normalsize{Mobile Development:}}{ \normalsize{Android Development, MVVM, Clean Architecture, RecyclerView, Android SDK, Facebook SDK, Google Analytics, Firebase Analytics, Firebase Auth}} \\
-      \vspace{1.2pt}
-      
-     \textbf{\normalsize{Cloud Platforms \& DevOps:}}{ \normalsize{Amazon Web Services (AWS), Google Cloud Platform (GCP), GitHub Actions, Jenkins, Git, JIRA, CI/CD Pipelines, Git Branching Strategies}} \\
-      \vspace{1.2pt}
-      
-     \textbf{\normalsize{Databases:}}{ \normalsize{MongoDB, PostgreSQL, DynamoDB, Firestore}} \\
-      \vspace{1.2pt}
-      
-     \textbf{\normalsize{APIs \& Protocols:}}{ \normalsize{RESTful APIs, ProtoBuf, eBay Finding API, eBay SDK, Razorpay API, Salesforce Marketing Cloud API}} \\
-      \vspace{1.2pt}
-      
-     \textbf{\normalsize{Tools \& Methodologies:}}{ \normalsize{Data Structures \& Algorithms, Object-Oriented Programming (OOP), Microservices, Caching Strategies (Cache-Aside), Asynchronous Programming (Promise.all), Cron Jobs, Test Automation, SEO Optimization, Agile Methodologies (Scrum, Sprints)}} \\
-      \vspace{1.2pt}
-      
-     \textbf{\normalsize{Data \& Analytics:}}{ \normalsize{Sentiment Analysis, Keyword Extraction, Data Aggregation, Data Ingestion, Data Reconciliation}} \\
-      \vspace{1.2pt}
-      
-     \textbf{\normalsize{Version Control:}}{ \normalsize{Git, GitHub, Bitbucket, AWS Code Commit}}
+\cventry{May 2024--Jul 2024}{Software Engineer Intern}{SoFiiT}{Los Angeles, CA}{}{
+\begin{itemize}[leftmargin=0.4cm]
+\item Architected \textbf{MVVM-based Kotlin app} for workout buddy discovery, integrating Google and Firebase Analytics, improving user retention by \textbf{20\%}
+\item Developed \textbf{OTP-based phone authentication} and email restrictions(.edu) via Firebase Auth, securing onboarding for \textbf{10K+ daily users}
+\item Integrated \textbf{Firestore} for offline support and real-time syncing, reducing data-sync latency by \textbf{40\%}
+\end{itemize}}
 
-     }}
- \end{itemize}
- \vspace{-16pt}
- 
- %-----------EXPERIENCE-----------
-\section{\color{airforceblue}WORK EXPERIENCE}
-  \resumeSubHeadingListStart
-
-    \resumeSubheading
-      {Software Engineer}{} 
-      {Sumeru Inc, Los Angeles, CA}{Jan 2025 - June 2025}
-      \resumeItemListStart
-            \resumeItem{\normalsize{Revamped Art of Living's Jyotish Vastu Academy website front end: migrated PHP Laravel to Next.js; developed high-traffic consumer platform on AWS with scalable microservices; integrated Razorpay payment webhooks---achieved 4X revenue increase within two months (≈\$120K incremental).}}
-            \resumeItem{\normalsize{Established standardized Git branching strategy and JIRA-driven sprint process: defined branching conventions, enforced pull-request workflows, trained cross-functional teams---accelerated feature delivery 40\%, improved engineering--product collaboration 30\%.}}  
-            \resumeItem{\normalsize{Partnered with Marketing \& QA teams: automated Salesforce Marketing Cloud email campaigns and workflows; architected backend logic, built automated test suites in Jenkins---ensured on-time campaigns, zero critical issues; reduced manual testing hours 75\% (≈\$45K annual savings).}}
-            \resumeItem{\normalsize{Led migration of legacy WordPress site to Next.js: refactored API endpoints, enhanced SEO metadata, modularized backend services---boosted organic search traffic 50\%, reduced ongoing maintenance costs 25\%.}}  
-      \resumeItemListEnd  
-
-    \resumeSubheading
-      {Software Engineer (Co-op)}{} 
-      {Tikr Media Inc., Santa Monica, CA}{Aug 2024 - Dec 2024}
-      \resumeItemListStart
-            \resumeItem{\normalsize{Developed Android counterpart of Series A iOS app in Kotlin using MVVM \& Clean Architecture---expanded reach 45\%, unlocked \$500K net annual revenue.}}
-            \resumeItem{\normalsize{Designed ProtoBuf implementation for critical APIs (createAccount, signin, AuthWithToken), deploying to Buf Schema Registry and reducing serialization overhead by 70\%.}}  
-            \resumeItem{\normalsize{Built \& maintained CI/CD pipeline using GitHub Actions with branching model aligned to sprint cycles---cut Play Store deployment time 90\%.}}  
-      \resumeItemListEnd  
-
-    \resumeSubheading
-      {Software Engineer Intern}{} 
-      {SoFiiT, Los Angeles, CA}{May 2024 - Jul 2024}
-      \resumeItemListStart
-            \resumeItem{\normalsize{Architected MVVM-based Kotlin app for workout buddy discovery, integrating Google and Firebase Analytics, improving user retention by 20\%.}}
-            \resumeItem{\normalsize{Developed OTP-based phone authentication and email restrictions(.edu) via Firebase Auth, securing onboarding for 10K+ daily users.}}  
-            \resumeItem{\normalsize{Integrated Firestore for offline support and real-time syncing, reducing data-sync latency by 40\%.}}  
-      \resumeItemListEnd  
-
-    \resumeSubheading
-      {Software Development Engineer}{} 
-      {NTT Data, India}{Nov 2021 - Dec 2022}
-      \resumeItemListStart
-            \resumeItem{\normalsize{Developed high-performance FastAPI RESTful API resource, replacing MuleSoft; improved messaging latency by 35\% and boosted API throughput by 60\%, saving \$150K annually in licensing costs.}}
-            \resumeItem{\normalsize{Built a consolidated Operational Data Store on AWS (RDS PostgreSQL and DynamoDB) with a FastAPI front-end, ingesting data from ResourceGuru, Greenhouse, and Zoho; cut data reconciliation efforts by 80\% and saved \$75K/year.}}  
-            \resumeItem{\normalsize{Implemented CI/CD pipelines with Jenkins to automate build/test/deploy processes for Java and Python services; pushed release frequency to bi-weekly and lowered post-release defects by 50\%.}}  
-      \resumeItemListEnd  
-
-  \resumeSubHeadingListEnd
-\vspace{-12pt}
-
-
- %-----------PROJECTS-----------
-\section{\color{airforceblue}PROJECTS}    
-    \resumeItemListStart
-        \vspace{0.5pt}
-        \resumeItem{\normalsize{\textbf{RAG-Based FAQ Web Application}, Built scalable backend systems with Python implementing Retrieval-Augmented Generation (RAG) for AI-powered question-answering; designed extensible system architecture supporting document indexing and real-time query processing. Developed backend interfaces integrating LlamaIndex and OpenAI APIs for LLM capabilities; implemented vector database indexing with similarity-based retrieval achieving 80\%+ answer accuracy through advanced AI integration. Architected document processing pipeline with concurrent PDF handling and vector embeddings; built web interfaces for knowledge workers enabling efficient document analysis and reducing information retrieval time by 75\%.} \href{https://github.com/udishkumar}{\color{blue}\underline{GitHub}}}
-        \vspace{-5pt}
-        
-        \resumeItem{\normalsize{\textbf{CryptoBoard: Your Ultimate Cryptocurrency News \& Sentiment Dashboard}, Designed CryptoBoard's modular Express.js backend (API, service, data layers), accelerating new-source onboarding by 75\%. Implemented cache-aside pattern with Node Cache (1h TTL) and hourly cron jobs, reducing median API latency by 60\%. Optimized data aggregation by orchestrating bulk-fetch of paginated APIs with Promise.all, decreasing processing time by 50\%. Integrated robust retry logic for Axios calls, reducing external API failure rate by 90\% and advanced sentiment analysis and keyword extraction algorithms, enhancing relevance-score accuracy by 30\%.} \href{https://github.com/udishkumar}{\color{blue}\underline{Try it!}}}
-        \vspace{-5pt}
-
-        \resumeItem{\normalsize{\textbf{FindMyProduct: Revolutionize Your Shopping Experience}, Developed a robust Kotlin-based Android application for seamless product search and wish-listing, integrating eBay's Finding API for real-time data retrieval and dynamically rendering results via RecyclerView components. Architected and deployed a scalable Node.js backend on Google Cloud Platform (GCP), leveraging the eBay SDK to optimize business logic and API handling, reducing API response time by 25\%. Implemented a secure MongoDB database with CRUD RESTful API operations for efficient user wishlist management, enhancing user satisfaction by 30\%. Integrated the Facebook SDK to enable social sharing functionalities for product posts.}  \href{https://github.com/udishkumar}{\color{blue}\underline{GitHub}}}
-        
-    \resumeItemListEnd  
-   
- \vspace{-12pt}
-%
+\cventry{Nov 2021--Dec 2022}{Software Development Engineer}{NTT Data}{India}{}{
+\begin{itemize}[leftmargin=0.4cm]
+\item Developed high-performance \textbf{FastAPI RESTful API} resource, replacing MuleSoft; improved messaging latency by 35\% and boosted API throughput by \textbf{60\%}, saving \textbf{\$150K annually} in licensing costs
+\item Built a consolidated \textbf{Operational Data Store on AWS} (RDS PostgreSQL and DynamoDB) with a FastAPI front-end, ingesting data from ResourceGuru, Greenhouse, and Zoho; cut data reconciliation efforts by 80\% and saved \textbf{\$75K/year}
+\item Implemented \textbf{CI/CD pipelines} with Jenkins to automate build/test/deploy processes for Java and Python services; pushed release frequency to bi-weekly and lowered post-release defects by \textbf{50\%}
+\end{itemize}}
 
 \end{document}
