@@ -1,90 +1,203 @@
-\documentclass[11pt,a4paper,sans]{moderncv}
-\moderncvstyle{banking}
-\moderncvcolor{blue}
-\usepackage[utf8]{inputenc}
-\usepackage[left=0.75cm,right=0.75cm,top=1cm,bottom=1cm]{geometry} % Maximized content area
-\usepackage{enumitem}
+%-------------------------
+% Resume in LaTeX (Udish Kumar) — ATS-friendly
+% Template base: Sourabh Bajaj (MIT)
+%------------------------
 
-\name{Udish}{Kumar}
-\title{Senior API Engineer \& App Integration Specialist}
-\address{San Francisco}{CA}{USA}
-\phone[mobile]{+1~(213)~272-3355}
-\email{udishkum@usc.edu}
-\homepage{linkedin.com/in/iudishkumar}
+\documentclass[letterpaper,11pt]{article}
+
+\usepackage{latexsym}
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage{marvosym}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{verbatim}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\usepackage[english]{babel}
+\usepackage{tabularx}
+\input{glyphtounicode}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+% Adjust margins
+\addtolength{\oddsidemargin}{-0.5in}
+\addtolength{\evensidemargin}{-0.5in}
+\addtolength{\textwidth}{1in}
+\addtolength{\topmargin}{-.5in}
+\addtolength{\textheight}{1.0in}
+
+\urlstyle{same}
+\raggedbottom
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+% Section formatting
+\titleformat{\section}{
+  \vspace{-4pt}\scshape\raggedright\large
+}{}{0em}{}[\color{black}\titlerule \vspace{-5pt}]
+
+% Ensure machine-readable/ATS-parsable PDF
+\pdfgentounicode=1
+
+%-------------------------
+% Custom commands
+\newcommand{\resumeItem}[2]{\item\small{\textbf{#1}{: #2 \vspace{-2pt}}}}
+\newcommand{\resumeHeading}[4]{
+  \begin{tabular*}{0.99\textwidth}[t]{l@{\extracolsep{\fill}}r}
+    \textbf{#1} & #2 \\
+    \textit{\small#3} & \textit{\small #4} \\
+  \end{tabular*}\vspace{-5pt}
+}
+\newcommand{\resumeSubheading}[4]{
+  \vspace{-1pt}\item
+    \begin{tabular*}{0.97\textwidth}[t]{l@{\extracolsep{\fill}}r}
+      \textbf{#1} & #2 \\
+      \textit{\small#3} & \textit{\small #4} \\
+    \end{tabular*}\vspace{-5pt}
+}
+\newcommand{\resumeSubSubheading}[2]{
+  \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+    \textit{\small#1} & \textit{\small #2} \\
+  \end{tabular*}\vspace{-5pt}
+}
+\newcommand{\resumeSubItem}[2]{\resumeItem{#1}{#2}\vspace{-4pt}}
+\renewcommand{\labelitemii}{$\circ$}
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=*]}
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
+\newcommand{\resumeItemListStart}{\begin{itemize}}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-5pt}}
+
+% Tight list helpers
+\newcommand{\resumeTightListStart}{\begin{itemize}[leftmargin=*, label={}, itemsep=1pt, topsep=2pt, parsep=0pt, partopsep=0pt]}
+\newcommand{\resumeTightListEnd}{\end{itemize}\vspace{-5pt}}
+
+%-------------------------------------------
+%%%%%%  CV STARTS HERE  %%%%%%%%%%%%%%%%%%%%
 
 \begin{document}
-\makecvtitle
 
+%----------HEADING-----------------
+\begin{tabular*}{\textwidth}{l@{\extracolsep{\fill}}r}
+  \textbf{\Large Udish Kumar} & Email: \href{mailto:udishkum@usc.edu}{udishkum@usc.edu} \\
+  \href{https://www.linkedin.com/in/iudishkumar}{linkedin.com/in/iudishkumar} \;|\; Seattle, WA & Mobile: \href{tel:+12132723355}{+1 (213) 272-3355} \\
+\end{tabular*}
+
+%-----------SUMMARY-----------------
 \section{Professional Summary}
-\cvitem{}{\textbf{Senior Full Stack API Engineer \& App Integration Specialist} with \textbf{5+ years} architecting scalable enterprise APIs, microservices, and integration solutions. Expert in designing high-performance \textbf{RESTful APIs, API Gateways, and microservices architectures} on AWS and GCP. Proven track record of delivering \textbf{\$3.2M+ in revenue growth} through payment integrations and API optimizations while reducing operational costs by \textbf{\$500K+} via strategic API migrations and automation.}
+Software Engineer specializing in APIs, integrations, and \textbf{AI/RAG systems} with 5+ years building scalable services on AWS/GCP. Strong in REST/gRPC, microservices, \textbf{vector databases}, and LLM integrations; proven impact on reliability, latency, and cost with hands-on CI/CD, observability, and performance optimization. Delivered \$3.2M+ revenue impact from payment integrations, \$500K+ cost savings via migrations, and \textbf{85\% reduction in information retrieval failures through intelligent RAG implementations}.
 
+%-----------SKILLS-----------------
 \section{Technical Skills}
-\cvitem{API \& Integration}{\textbf{RESTful APIs, GraphQL, SOAP, API Gateway, Microservices}, ProtoBuf, webMethods Digital Business Platform, OAuth 2.0, API Management, Webhook Processing}
-\cvitem{Backend \& Frameworks}{\textbf{Node.js, Express.js, FastAPI, Django, Python, Java}, Kotlin, PHP, Spring Boot, Middleware Development}
-\cvitem{Frontend \& Full Stack}{\textbf{Next.js, React.js, JavaScript (ES6+)}, TypeScript, HTML5, CSS3, Responsive Design}
-\cvitem{Cloud \& DevOps}{\textbf{Amazon Web Services (AWS), Google Cloud Platform (GCP)}, Docker, Kubernetes, CI/CD Pipelines, GitHub Actions, Jenkins}
-\cvitem{Databases \& Storage}{\textbf{PostgreSQL, MongoDB, DynamoDB, Oracle SQL}, Firestore, Redis, Database Design, Query Optimization}
-\cvitem{Payment \& E-commerce APIs}{Razorpay API, Stripe, PayPal, eBay Finding API, eBay SDK, Salesforce Marketing Cloud API}
-\cvitem{AI/ML \& Data}{\textbf{OpenAI API, LlamaIndex, Vector Databases, RAG}, Streamlit, Data Processing, Machine Learning Pipelines}
-\cvitem{Testing \& Quality}{\textbf{Postman, Newman, JUnit, SOAP-UI}, Automated Testing, Unit Testing, Integration Testing, API Documentation}
-\cvitem{Mobile Development}{Android SDK, Firebase Auth, Firebase Analytics, MVVM Architecture, Clean Architecture}
+{%
+\begin{itemize}[leftmargin=*, itemsep=1pt, topsep=2pt, parsep=0pt, partopsep=0pt]
+  \item \textbf{Languages:} Python, Java, TypeScript/JavaScript, Kotlin
+  \item \textbf{Backend \& Libs:} Node.js, Express.js, FastAPI, Django, Spring Boot, Axios, Node Cache
+  \item \textbf{Frontend:} React, Next.js, HTML5, CSS3
+  \item \textbf{Cloud/DevOps:} AWS, GCP, Docker, Kubernetes, GitHub Actions, Jenkins, API Gateway, OAuth 2.0, CI/CD
+  \item \textbf{Data/Storage:} PostgreSQL, MongoDB, DynamoDB, Oracle SQL, Redis, Firestore, \textbf{ChromaDB}, \textbf{Vector Databases}
+  \item \textbf{APIs \& Integration:} REST, \textbf{gRPC/Protocol Buffers}, GraphQL, SOAP, Webhooks, API Management, webMethods DBP (Integration Server, API Gateway/Portal, Universal Messaging), \textbf{Buf Schema Registry (BSR)}
+  \item \textbf{Payments \& Partner APIs:} Razorpay, Stripe, PayPal, eBay Finding API/SDK, \textbf{Google Custom Search API}
+  \item \textbf{AI/ML:} \textbf{RAG Systems}, Claude (Sonnet/Opus), OpenAI (GPT-4/5), LlamaIndex, \textbf{HuggingFace Embeddings}, \textbf{Semantic Search}, Prompt Engineering, Vector Similarity, Streamlit, Perplexity
+  \item \textbf{Mobile:} Android SDK, Kotlin, MVVM, Clean Architecture, RecyclerView, Firebase Auth \& Analytics, Google Analytics, Facebook SDK
+  \item \textbf{Testing \& Docs:} Postman/Newman, JUnit, SOAP-UI, OpenAPI/Swagger
+  \item \textbf{Agile/VCS Tools:} Jira, Confluence, Swift Kanban, Scrum/Sprints, Bitbucket, AWS Code Commit, Github 
+\end{itemize}
+}
 
+%-----------EXPERIENCE-----------------
 \section{Experience}
-\cventry{Jan 2025--June 2025}{Full Stack Engineer}{Sumeru Inc}{Los Angeles, CA}{}{
-\begin{itemize}[leftmargin=0.4cm]
-\item Designed and implemented payment and webhook integrations for Razorpay by developing an AWS-hosted \textbf{Next.js frontend and Node.js backend}; achieved 99\% transaction reliability and generated \textbf{\$3.2M in incremental annual revenue}
-\item Migrated Sumeru's legacy WordPress site to Next.js; reduced page-load times by 40\%, cut hosting costs by \textbf{\$98K/year}, and boosted organic traffic by 30\%
-\end{itemize}}
+\resumeSubHeadingListStart
 
-\cventry{Nov 2021--Dec 2022}{Lead Engineer}{Apisero Inc}{Remote}{}{
-\begin{itemize}[leftmargin=0.4cm]
-\item Designed and deployed \textbf{FastAPI microservices} to replace MuleSoft ESB integrations on AWS by defining JSON/XML schemas and RESTful endpoints; eliminated \textbf{\$150K in annual licensing fees} and boosted API throughput by 60\%
-\item Developed an Operational Data Store platform by integrating ResourceGuru, Greenhouse, and Zoho via Django APIs and AWS services; reduced data-availability latency from hours to minutes, improved data integrity by 80\%, and saved \textbf{\$75K annually}
-\item Implemented CI/CD pipelines using Git, Maven, and Jenkins by automating testing and deployment workflows; increased release frequency to bi-weekly and reduced post-release defects by 50\%
-\end{itemize}}
+  \resumeSubheading
+    {Sumeru Inc}{Los Angeles, CA}
+    {Full Stack Engineer}{Jan 2025 -- Jun 2025}
+    \resumeItemListStart
+      \resumeItem{Razorpay Payments \& Webhooks}{Designed and implemented payment and webhook integrations for Razorpay by developing an AWS-hosted Next.js frontend and Node.js backend; achieved 99\% transaction reliability and generated \$3.2M in incremental annual revenue.}
+      \resumeItem{Website Migration}{Migrated WordPress to \textbf{Next.js}; reduced page-load times \textbf{40\%}, cut hosting costs \textbf{\$98K/yr}, and increased organic traffic \textbf{30\%}.}
+    \resumeItemListEnd
 
-\cventry{Apr 2021--Oct 2021}{Senior Software Engineer}{PricewaterhouseCoopers LLP}{India}{}{
-\begin{itemize}[leftmargin=0.4cm]
-\item Built middleware framework on webMethods Digital Business Platform by developing logging, caching, configuration-management, and PDF-generation utilities; accelerated integration development speed by 30\%, saving \textbf{\$50K annually}
-\item Designed and implemented encrypted API payload flows on webMethods Integration Server using symmetric cryptography and automated testing via webMethods Unit Test Executor; reduced security incidents by 40\% and raised code coverage to \textbf{95\%}
-\item Developed API management solution using webMethods API Management, configured API Gateway, hosted APIs on API Portal to showcase clients before deployment; improved client feedback, deployment readiness by 35\%
-\item Implemented OAuth 2.0 authentication on the webMethods ESB layer using Authorization Code, Client Credentials, and ROPC grant types by scripting token-lifecycle automation; cut manual configuration errors by 70\% and saved \textbf{120 development hours per year}
-\end{itemize}}
+  \resumeSubheading
+    {Tikr Media Inc.}{Santa Monica, CA}
+    {Software Engineer (Co-op)}{Aug 2024 -- Dec 2024}
+    \resumeItemListStart
+      \resumeItem{Android app (Kotlin, MVVM, Clean Architecture)}{Built Android counterpart to Series A iOS app; expanded reach \textbf{45\%} and unlocked \textbf{\$500K} net annual revenue.}
+      \resumeItem{Protocol Buffers \& BSR}{Designed ProtoBuf contracts for \texttt{createAccount}, \texttt{signin}, \texttt{AuthWithToken}; published to \textbf{Buf Schema Registry} and reduced serialization overhead \textbf{70\%}.}
+      \resumeItem{CI/CD}{Set up GitHub Actions with sprint-aligned branching; cut Play Store deployment time \textbf{90\%}.}
+    \resumeItemListEnd
 
-\cventry{Dec 2018--Mar 2021}{Associate Software Engineer}{Software AG}{India}{}{
-\begin{itemize}[leftmargin=0.4cm]
-\item Developed and supported integration solutions on webMethods Digital Business Platform for a major insurance client by creating middleware interfaces for policy data flows; improved transaction throughput by 45\% and boosted client satisfaction by 20\%
-\item Designed, implemented API management solution using webMethods API Management, configured API Gateway, deployed APIs on API Portal to enable clients to review, test APIs prior to deployment; reduced API deployment time by 30\%
-\item Resolved critical integration incidents and applied hot-fixes on webMethods ESB by performing 24/7 root-cause analysis; eliminated 98\% of SLA breaches and averted \textbf{\$80K in penalty costs}
-\item Automated testing for 250+ RESTful web services using Postman CLI/Newman and JUnit by scripting test suites; increased coverage by 30\% and reduced manual QA effort by 90\%, saving \textbf{\$50K yearly}
-\end{itemize}}
+  \resumeSubheading
+    {SoFiiT}{Los Angeles, CA}
+    {Software Engineer Intern}{May 2024 -- Jul 2024}
+    \resumeItemListStart
+      \resumeItem{Kotlin app architecture}{Built MVVM-based workout-buddy app; integrated Google \& Firebase Analytics to improve user retention \textbf{20\%}.}
+      \resumeItem{Auth \& onboarding}{Implemented OTP phone auth and \texttt{.edu} email restriction via Firebase Auth; secured onboarding for \textbf{10K+} daily users.}
+      \resumeItem{Realtime data}{Integrated Firestore for offline-first sync; reduced data-sync latency \textbf{40\%}.}
+    \resumeItemListEnd
 
-\cventry{Oct 2016--Nov 2018}{Developer Trainee}{Cognizant}{India}{}{
-\begin{itemize}[leftmargin=0.4cm]
-\item Built 50+ enterprise interfaces using webMethods Designer---Flow Services, Java Services, File-Polling, SOAP/REST APIs, and flat-file processing; enhanced data-exchange reliability by 35\% and reduced end-to-end latency by 40\%
-\item Configured Universal Messaging Enterprise Manager for asynchronous pub-sub messaging by creating topics and queues; decoupled systems and reduced message-delivery latency by 30\%
-\item Automated integration testing with webMethods Unit Test Framework and SOAP-UI incorporating X.509 authentication for SOAP services; raised test coverage to 90\% and cut post-production defects by 60\%
-\end{itemize}}
+  \resumeSubheading
+    {NTT DATA}{Remote}
+    {Lead Engineer}{Nov 2021 -- Dec 2022}
+    \resumeItemListStart
+      \resumeItem{FastAPI Microservices on AWS}{Replaced MuleSoft ESB with \textbf{FastAPI} services; eliminated \textbf{\$150K/yr} licensing and improved API throughput \textbf{60\%}.}
+      \resumeItem{Operational Data Store}{Integrated ResourceGuru, Greenhouse, Zoho via \textbf{Django + AWS}; reduced data latency from hours to minutes, improved data integrity \textbf{80\%}, saved \textbf{\$75K/yr}.}
+      \resumeItem{CI/CD}{Implemented pipelines with Git, Maven, Jenkins; enabled bi-weekly releases and reduced post-release defects \textbf{50\%}.}
+    \resumeItemListEnd
 
-\section{Education}
-\cventry{Jan 2023--Dec 2024}{Master of Science in Computer Science}{University of Southern California}{Los Angeles, CA}{}{}
-\cventry{Aug 2012--Jul 2016}{Bachelor of Technology in Computer Science \& Engineering}{Punjab Technical University}{Punjab, India}{}{}
+  \resumeSubheading
+    {PricewaterhouseCoopers LLP}{India}
+    {Senior Software Engineer}{Apr 2021 -- Oct 2021}
+    \resumeItemListStart
+      \resumeItem{Middleware Framework}{Built logging, caching, config mgmt, and PDF utilities on \textbf{webMethods DBP}; accelerated delivery \textbf{30\%}, saving \textbf{\$50K/yr}.}
+      \resumeItem{Secure Payload Flows}{Implemented encrypted API payloads on webMethods IS with automated tests; reduced security incidents \textbf{40\%}, code coverage \textbf{95\%}.}
+      \resumeItem{API Management Enablement}{Configured API Gateway \& API Portal for client reviews prior to deployment; improved client feedback and deployment readiness \textbf{35\%}.}
+      \resumeItem{OAuth 2.0 Automation}{Deployed Auth Code, Client Credentials, ROPC; scripted token lifecycle to cut config errors \textbf{70\%} and save \textbf{120 hrs/yr}.}
+    \resumeItemListEnd
 
+  \resumeSubheading
+    {Software AG}{India}
+    {Associate Software Engineer}{Dec 2018 -- Mar 2021}
+    \resumeItemListStart
+      \resumeItem{Enterprise Integrations}{Delivered interfaces on \textbf{webMethods DBP} for a major insurance client; improved throughput \textbf{45\%} and client satisfaction \textbf{20\%}.}
+      \resumeItem{API Management}{Configured API Gateway \& Portal; reduced API deployment time \textbf{30\%}.}
+      \resumeItem{Incident Resolution \& QA}{Eliminated \textbf{98\%} SLA breaches (averted \textbf{\$80K} penalties) and automated tests for \textbf{250+} REST services (Postman/Newman, JUnit) to raise coverage \textbf{30\%} and cut manual QA \textbf{90\%}.}
+    \resumeItemListEnd
+
+  \resumeSubheading
+    {Cognizant}{India}
+    {Developer Trainee}{Oct 2016 -- Nov 2018}
+    \resumeItemListStart
+      \resumeItem{Interfaces \& Messaging}{Built \textbf{50+} interfaces (Flow/Java Services, SOAP/REST, flat-file); +\textbf{35\%} reliability, -\textbf{40\%} latency. Configured Universal Messaging pub-sub to decouple systems and reduce delivery latency \textbf{30\%}.}
+      \resumeItem{Automated Testing}{Implemented webMethods UTF \& SOAP-UI with X.509; \textbf{90\%} coverage and \textbf{60\%} fewer post-production defects.}
+    \resumeItemListEnd
+
+\resumeSubHeadingListEnd
+
+%-----------PROJECTS-----------------
 \section{Projects}
-\cvitem{RAG-Based FAQ Web Application}{
-\begin{itemize}[leftmargin=0.4cm]
-\item Built scalable backend systems with Python implementing \textbf{Retrieval-Augmented Generation (RAG)} for AI-powered question-answering; designed extensible system architecture supporting document indexing and real-time query processing
-\item Developed backend interfaces integrating \textbf{LlamaIndex and OpenAI APIs} for LLM capabilities; implemented vector database indexing with similarity-based retrieval achieving 80\%+ answer accuracy through advanced AI integration
-\item Architected document processing pipeline with concurrent PDF handling and vector embeddings; built web interfaces for knowledge workers enabling efficient document analysis and reducing information retrieval time by \textbf{75\%}
-\end{itemize}}
+\resumeSubHeadingListStart
+  \resumeSubItem{Agentic RAG Assistant with Intelligent Query Routing}{
+    Architected multi-source \textbf{RAG} system using \textbf{ChromaDB} vector storage, HuggingFace embeddings, and \textbf{Claude API} with autonomous routing between document retrieval and web search based on relevance scoring (<0.35 threshold). Developed 7+ heuristic methods detecting insufficient responses and modification queries for automatic enrichment; achieved \textbf{85\%} reduction in incomplete answers and sub-2s retrieval. Built with Python, \textbf{LlamaIndex}, Google CSE API, implementing hash-based deduplication and conversation-aware context expansion.}
+  \resumeSubItem{CryptoBoard Dashboard}{
+    Designed modular \textbf{Express.js} backend (API/service/data layers); cache-aside with Node Cache (1h TTL) and scheduled fetches cut median API latency \textbf{60\%}. Parallelized paginated fetches with \texttt{Promise.all} + retries to cut processing time \textbf{50\%} and external API failures \textbf{90\%}. Hosted on Railway/AWS.}
+  \resumeSubItem{FindMyProduct (Android + Backend)}{
+    Built Kotlin Android app (RecyclerView, MVVM) integrating eBay Finding API for real-time product search \& wishlists. Deployed Node.js backend on \textbf{GCP} using eBay SDK; reduced API response time \textbf{25\%}. Added MongoDB CRUD for wishlist mgmt and Facebook SDK sharing (↑ user engagement \textbf{30\%}).}
+\resumeSubHeadingListEnd
 
-\cvitem{CryptoBoard Dashboard}{
-\begin{itemize}[leftmargin=0.4cm]
-\item Designed CryptoBoard's modular Express.js backend (API, service, data layers), accelerating new-source onboarding by 75\%
-\item Implemented cache-aside pattern with Node Cache (1h TTL) and hourly cron jobs, reducing median API latency by 60\%
-\item Optimized data aggregation by orchestrating bulk-fetch of paginated APIs with Promise.all, decreasing processing time by 50\%
-\item Integrated robust retry logic for Axios calls, reducing external API failure rate by 90\% and advanced sentiment analysis and keyword extraction algorithms, enhancing relevance-score accuracy by 30\%
-\item \textbf{Live Demo:} \href{https://cryptoboard-frontend.onrender.com/}{https://cryptoboard-frontend.onrender.com/}
-\end{itemize}}
+%-----------EDUCATION-----------------
+\section{Education}
+\resumeSubHeadingListStart
+  \resumeSubheading
+    {University of Southern California}{Los Angeles, CA}
+    {Master of Science in Computer Science}{Jan 2023 -- Dec 2024}
+  \resumeSubheading
+    {Punjab Technical University}{Punjab, India}
+    {Bachelor of Technology in Computer Science \& Engineering}{Aug 2012 -- Jul 2016}
+\resumeSubHeadingListEnd
 
+%-------------------------------------------
 \end{document}
