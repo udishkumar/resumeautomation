@@ -102,7 +102,8 @@
 %----------HEADING-----------------
 \begin{tabular*}{\textwidth}{l@{\extracolsep{\fill}}r}
   \textbf{\Large Udish Kumar} & Email: \href{mailto:udishkum@usc.edu}{udishkum@usc.edu} \\
-  \href{https://www.linkedin.com/in/iudishkumar}{linkedin.com/in/iudishkumar} \;|\; Seattle, WA & Mobile: \href{tel:+12132723355}{+1 (213) 272-3355} \\
+  % \href{https://www.linkedin.com/in/iudishkumar}{linkedin.com/in/iudishkumar} \;|\; 
+  San Francisco, CA & Mobile: \href{tel:+12132723355}{+1 (213) 272-3355} \\
 \end{tabular*}
 
 %-----------EDUCATION-----------------
@@ -111,37 +112,43 @@
   \resumeSubheading
     {University of Southern California}{Los Angeles, CA}
     {Master of Science in Computer Science}{Jan 2023 -- Dec 2024}
-  \resumeSubheading
-    {Punjab Technical University}{Punjab, India}
-    {Bachelor of Technology in Computer Science \& Engineering}{Aug 2012 -- Jul 2016}
+  % \resumeSubheading
+  %   {Punjab Technical University}{Punjab, India}
+  %   {Bachelor of Technology in Computer Science \& Engineering}{Aug 2012 -- Jul 2016}
 \resumeSubHeadingListEnd
-
-
 %-----------SKILLS-----------------
 \section{Technical Skills}
 {%
 \begin{itemize}[leftmargin=*, itemsep=1pt, topsep=2pt, parsep=0pt, partopsep=0pt]
-  \item \textbf{Languages:} Python, Java, TypeScript/JavaScript, Kotlin
-  \item \textbf{Backend \& Libs:} Node.js, Express.js, FastAPI, Django, Spring Boot, Axios, Node Cache
-  \item \textbf{Frontend:} React, Next.js, HTML5, CSS3
-  \item \textbf{Cloud/DevOps:} AWS, GCP, Docker, Kubernetes, GitHub Actions, Jenkins, API Gateway, OAuth 2.0, CI/CD
-  \item \textbf{Data/Storage:} PostgreSQL, MongoDB, DynamoDB, Oracle SQL, Redis, Firestore, \textbf{ChromaDB}, \textbf{Vector Databases}
-  \item \textbf{APIs \& Integration:} REST, \textbf{gRPC/Protocol Buffers}, GraphQL, SOAP, Webhooks, API Management, webMethods DBP (Integration Server, API Gateway/Portal, Universal Messaging), \textbf{Buf Schema Registry (BSR)}
-  \item \textbf{Payments \& Partner APIs:} Razorpay, Stripe, PayPal, eBay Finding API/SDK, \textbf{Google Custom Search API}
-  \item \textbf{AI/ML:} \textbf{RAG Systems}, Claude (Sonnet/Opus), OpenAI (GPT-4/5), LlamaIndex, \textbf{HuggingFace Embeddings}, \textbf{Semantic Search}, Prompt Engineering, Vector Similarity, Streamlit, Perplexity
+  \item \textbf{Languages:} Python, JavaScript, Kotlin
+  \item \textbf{Backend:} Node.js, Express.js, FastAPI
+  \item \textbf{Frontend:} React, Next.js
+  \item \textbf{Cloud/DevOps:} AWS, GCP, Railway, GitHub Actions, CI/CD
+  \item \textbf{Databases:} MongoDB, Firestore, \textbf{ChromaDB}, \textbf{Vector Databases}
+  \item \textbf{AI/ML:} \textbf{RAG Systems}, Claude API, OpenAI APIs, LlamaIndex, \textbf{HuggingFace Embeddings}, Streamlit
   \item \textbf{Mobile:} Android SDK, Kotlin, MVVM, Clean Architecture, RecyclerView, Firebase Auth \& Analytics, Google Analytics, Facebook SDK
-  \item \textbf{Testing \& Docs:} Postman/Newman, JUnit, SOAP-UI, OpenAPI/Swagger
-  \item \textbf{Agile/VCS Tools:} Jira, Confluence, Swift Kanban, Scrum/Sprints, Bitbucket, AWS Code Commit, Github 
+  \item \textbf{APIs \& Integration:} \textbf{Protocol Buffers}, \textbf{Buf Schema Registry (BSR)}, Webhooks, Node Cache
+  \item \textbf{Payments \& Partner APIs:} Razorpay, eBay Finding API/SDK, \textbf{Google Custom Search API}
 \end{itemize}
 }
-
+%-----------PROJECTS-----------------
+\vspace{0pt}
+\section{Projects}
+\resumeSubHeadingListStart
+  \resumeSubItem{P.R.A.G.Y.A. Agentic RAG Assistant with Intelligent Query Routing}{
+    Architected \textbf{distributed} multi-source RAG system using \textbf{ChromaDB} vector storage, HuggingFace embeddings, and Claude API with autonomous routing between document retrieval and web search based on relevance scoring (<0.35 threshold). Implemented \textbf{7+ algorithms} for detecting insufficient responses and modification queries with automatic enrichment; achieved \textbf{85\%} reduction in incomplete answers and sub-2s retrieval. Built with \textbf{Python}, LlamaIndex, Google CSE API, implementing hash-based deduplication and conversation-aware context expansion.}
+  \resumeSubItem{CryptoBoard Dashboard}{
+    Designed modular Express.js backend with \textbf{data structures} optimization (API/service/data layers); cache-aside with Node Cache (1h TTL) and scheduled fetches cut median API latency \textbf{60\%}. Parallelized paginated fetches with \texttt{Promise.all} + retries to cut processing time \textbf{50\%} and external API failures \textbf{90\%}. Hosted on Railway/AWS.}
+  \resumeSubItem{FindMyProduct (Android + Backend)}{
+    Built Kotlin Android app (RecyclerView, MVVM) integrating eBay Finding API for real-time product search \& wishlists. Deployed \textbf{Node.js} backend on GCP using eBay SDK; reduced API response time \textbf{25\%}. Added MongoDB CRUD for wishlist mgmt and Facebook SDK sharing (↑ user engagement \textbf{30\%}).}
+\resumeSubHeadingListEnd
 %-----------EXPERIENCE-----------------
 \section{Experience}
 \resumeSubHeadingListStart
 
   \resumeSubheading
     {Sumeru Inc.}{Los Angeles, CA}
-    {Full Stack Engineer}{Jan 2025 -- Jun 2025}
+    {Software Engineer}{Jan 2025 -- Jun 2025}
     \resumeItemListStart
       \resumeItem{Razorpay Payments \& Webhooks}{Designed and implemented payment and webhook integrations for Razorpay by developing an AWS-hosted Next.js frontend and Node.js backend; achieved 99\% transaction reliability and generated \$3.2M in incremental annual revenue.}
       \resumeItem{Website Migration}{Migrated WordPress to \textbf{Next.js}; reduced page-load times \textbf{40\%}, cut hosting costs \textbf{\$98K/yr}, and increased organic traffic \textbf{30\%}.}
@@ -161,24 +168,9 @@
     {Software Engineer Intern}{May 2024 -- Jul 2024}
     \resumeItemListStart
       \resumeItem{Kotlin app architecture}{Built MVVM-based workout-buddy app; integrated Google \& Firebase Analytics to improve user retention \textbf{20\%}.}
-      \resumeItem{Auth \& onboarding}{Implemented OTP phone auth and \texttt{.edu} email restriction via Firebase Auth; secured onboarding for \textbf{10K+} daily users.}
-      \resumeItem{Realtime data}{Integrated Firestore for offline-first sync; reduced data-sync latency \textbf{40\%}.}
+      \resumeItem{Auth \& onboarding}{Implemented OTP phone auth and \texttt{.edu} email restriction via Firebase Auth; secured onboarding for \textbf{10K+} daily users.Integrated Firestore for offline-first sync; reduced data-sync latency \textbf{40\%}.}
     \resumeItemListEnd
 
-\resumeSubHeadingListEnd
-
-%-----------PROJECTS-----------------
-\vspace{2pt}
-\section{Projects}
-\resumeSubHeadingListStart
-  \resumeSubItem{Agentic RAG Assistant with Intelligent Query Routing}{
-    Architected multi-source \textbf{RAG} system using \textbf{ChromaDB} vector storage, HuggingFace embeddings, and \textbf{Claude API} with autonomous routing between document retrieval and web search based on relevance scoring (<0.35 threshold). Developed 7+ heuristic methods detecting insufficient responses and modification queries for automatic enrichment; achieved \textbf{85\%} reduction in incomplete answers and sub-2s retrieval. Built with Python, \textbf{LlamaIndex}, Google CSE API, implementing hash-based deduplication and conversation-aware context expansion.}
-  \resumeSubItem{RAG-Based FAQ Web Application}{
-    Implemented \textbf{RAG} backend in Python with LlamaIndex \& OpenAI APIs; vector DB indexing and real-time retrieval achieved \textbf{80\%+} answer accuracy. Built concurrent PDF pipeline \& web UI (Streamlit) to reduce info-retrieval time \textbf{75\%}.}
-  \resumeSubItem{CryptoBoard Dashboard}{
-    Designed modular \textbf{Express.js} backend (API/service/data layers); cache-aside with Node Cache (1h TTL) and scheduled fetches cut median API latency \textbf{60\%}. Parallelized paginated fetches with \texttt{Promise.all} + retries to cut processing time \textbf{50\%} and external API failures \textbf{90\%}. Hosted on Railway/AWS.}
-  \resumeSubItem{FindMyProduct (Android + Backend)}{
-    Built Kotlin Android app (RecyclerView, MVVM) integrating eBay Finding API for real-time product search \& wishlists. Deployed Node.js backend on \textbf{GCP} using eBay SDK; reduced API response time \textbf{25\%}. Added MongoDB CRUD for wishlist mgmt and Facebook SDK sharing (↑ user engagement \textbf{30\%}).}
 \resumeSubHeadingListEnd
 
 %-------------------------------------------

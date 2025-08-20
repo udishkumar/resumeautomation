@@ -503,7 +503,11 @@ Current LaTeX Resume Template:
 Job Description to Optimize For:
 {job_description}
 
-Return ONLY the complete LaTeX code with preserved formatting and optimized content."""
+Return ONLY the complete LaTeX code with preserved formatting and optimized content.
+
+
+Finally, tailor summary(if it exists) and skills sections to resonate with experience and other sections of the resume
+"""
 
         try:
             # Use Claude to optimize
