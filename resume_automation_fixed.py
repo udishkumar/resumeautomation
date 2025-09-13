@@ -267,7 +267,7 @@ class LaTeXResumeOptimizer:
             # Create filename
             date_str = datetime.now().strftime("%b%d")
             safe_company = re.sub(r'[^a-zA-Z0-9_-]', '_', company_name.strip())
-            filename_base = f"{candidate_name}_{safe_company}_{date_str}"
+            filename_base = f"Udish_Kumar_Resume_{safe_company}_{date_str}"
             
             print(f"\nStarting PDF compilation for: {filename_base}")
             
@@ -444,69 +444,90 @@ class LaTeXResumeOptimizer:
             template_type_desc = "GENERAL template (using experienced order)"
         
         # IMPROVED STRATEGIC PROMPT FOCUSED ON CONTENT PRESERVATION
-        prompt = f"""Expert ATS optimizer & Resume Content Specialist: Optimize this LaTeX resume content for 90%+ keyword match while PRESERVING the exact LaTeX format and structure.
+        prompt = f"""You are assisting a career professional in strategically positioning their authentic experiences for a specific opportunity. Apply these evidence-based resume optimization principles:
 
-TEMPLATE TYPE: {template_type_desc}
-CRITICAL INSTRUCTION: PRESERVE ALL LaTeX formatting, commands, packages, and document structure EXACTLY as provided.
+CORE PHILOSOPHY: Great resumes don't lie - they translate. Your job is to help the reader understand how this candidate's real experiences solve their real problems.
 
-WHAT TO PRESERVE (DO NOT CHANGE):
-- All \\documentclass, \\usepackage, and preamble commands
-- All LaTeX formatting commands (\\cventry, \\cvitem, \\section, etc.)  
-- Document structure and section organization
-- All spacing, margins, and layout commands
-- Font specifications and styling commands
-- Date formats and positioning
-- Bullet point formatting (\\begin{{itemize}}, \\item, etc.)
-- Any custom commands or environments
+STRATEGIC ANALYSIS PHASE:
+1. First, identify the employer's core pain points from the JD (not just keywords)
+2. Map the candidate's actual experiences to these business needs
+3. Find the authentic intersection between what they've done and what's needed
 
-WHAT TO OPTIMIZE (CONTENT ONLY):
-1. **Professional Summary/Objective**: Enhance with top 8-10 job keywords naturally while keeping same format
-2. **Technical Skills**: Update skill names and technologies to match job requirements, keep same categories and LaTeX structure
-3. **Experience Bullets**: Rewrite bullet point CONTENT to include relevant keywords and metrics, keep same \\item structure
-4. **Education/Projects**: Update descriptions to highlight relevant coursework/technologies, preserve LaTeX formatting
-5. **Strategic Bold Formatting**: Add \\textbf{{}} around key metrics, technologies, and achievements (like existing template)
+TRANSLATION FRAMEWORK:
+The "So What?" Test: For each experience, answer:
+- What business problem did this solve?
+- What was the measurable/observable impact?
+- How does this predict success in the target role?
 
-KEYWORD INTEGRATION STRATEGY:
-- Extract ALL relevant keywords from job description
-- Naturally integrate keywords into existing content without changing LaTeX structure
-- Prioritize must-have technical skills and experience requirements
-- Include industry-standard acronyms and full forms where appropriate
-- Maintain authentic tone while optimizing for ATS scanning
+AUTHENTIC OPTIMIZATION TACTICS:
 
-CONTENT ENHANCEMENT RULES:
-- Keep all existing section headers and LaTeX section commands
-- Preserve all date ranges and company/school names exactly as formatted
-- Maintain bullet point structure but enhance content for impact
-- Add quantified achievements where possible using existing metrics format
-- Use strategic \\textbf{{}} for key numbers, technologies, and achievements
+1. **Context Bridging**: Add brief context that helps readers connect dots
+   - Original: "Developed Python scripts"
+   - Optimized: "Developed Python scripts for data pipeline automation" (if true)
+   - This isn't changing facts, it's removing ambiguity
 
-CRITICAL FORMATTING PRESERVATION:
-- Keep exact same \\documentclass and all \\usepackage commands
-- Preserve all margin, spacing, and geometry settings
-- Maintain all custom commands and their usage
-- Keep same font selections and styling
-- Preserve header/contact information formatting exactly
-- Do not change section ordering or LaTeX structure
+2. **Impact Archaeology**: Surface the hidden value in existing experiences
+   - Look for unclaimed wins: Did that project save time? Prevent errors? Enable decisions?
+   - Many candidates underreport their actual impact
 
-OUTPUT REQUIREMENT:
-Return the COMPLETE LaTeX document with:
-- Exact same structure and formatting as the original
-- Enhanced CONTENT optimized for the job description
-- All LaTeX commands, packages, and formatting preserved
-- Only text content within sections updated for keyword optimization
+3. **Transferable Skill Highlighting**: 
+   - A project manager in construction has skills relevant to tech PM roles
+   - Draw these parallels explicitly without claiming false experience
 
-Current LaTeX Resume Template:
+4. **Achievement Framing Hierarchy**:
+   - Lead with the most relevant aspect of each experience
+   - If you "Led team of 5 to deliver X, using Y technology" 
+   - For a leadership role: "Led team of 5..."
+   - For a technical role: "Implemented Y technology to deliver X..."
+   - Same truth, different emphasis
+
+5. **The "Verb Upgrade" (when accurate)**:
+   Weak → Strong (only if true):
+   - Helped with → Collaborated on/Contributed to
+   - Was responsible for → Managed/Owned/Drove
+   - Worked on → Delivered/Implemented/Optimized
+
+PROFESSIONAL INTEGRITY RULES:
+- Every statement must pass the "interview defense test" - can you confidently elaborate on this for 5 minutes?
+- Quantification must be defensible (use ranges if exact numbers unknown: "15-20%" not "17.5%")
+- Technical skills listed must withstand practical testing
+- Dates, titles, and companies remain untouched
+- Academic credentials are sacred - no alterations
+
+STRATEGIC OMISSION & INCLUSION:
+- You may strategically choose which experiences to emphasize (not hide, just de-emphasize)
+- You may expand relevant experiences and compress less relevant ones
+- You may include relevant coursework, certifications, or side projects if they exist
+
+ATS OPTIMIZATION WITHOUT GAMING:
+- Natural keyword integration in context, not keyword stuffing
+- Use industry-standard terminology for concepts you genuinely understand
+- Include common variations (e.g., "ML/Machine Learning") where you have real knowledge
+
+THE HIRING MANAGER PERSPECTIVE:
+Remember: Hiring managers read between the lines. They want to see:
+- Problem-solving ability (show this through your real examples)
+- Cultural fit (demonstrate through how you describe collaboration)
+- Growth trajectory (show progression in your actual roles)
+- Genuine interest (align your real experiences with their needs)
+
+Current Resume Content:
 ```latex
 {original_latex_content}
-```
 
-Job Description to Optimize For:
+Target Position Requirements:
 {job_description}
 
-Return ONLY the complete LaTeX code with preserved formatting and optimized content.
+DELIVERABLE:
+Return the LaTeX code with strategic positioning that:
 
+Maintains 100% factual accuracy
+Maximizes relevance through intelligent emphasis and context
+Passes both ATS screening and human "BS detection"
+Tells a compelling, truthful story of candidate-role fit
+Preserves the candidate's authentic professional identity while showing their best, most relevant self
 
-Finally, tailor summary(if it exists) and skills sections to resonate with experience and other sections of the resume
+Remember: The best resume isn't the one with the most keywords - it's the one that makes the hiring manager say "This person gets it and can do the job."
 """
 
         try:
@@ -1274,7 +1295,7 @@ class LaTeXResumeAutomationGUI:
         latex_code = self.output_text.get("1.0", tk.END).strip()
         if latex_code:
             timestamp = datetime.now().strftime("%Y%m%d_%H%M")
-            default_filename = f"optimized_resume_{timestamp}.tex"
+            default_filename = f"UDISH_KUMAR_"+"optimized_resume_{timestamp}.tex"
             
             file_path = filedialog.asksaveasfilename(
                 defaultextension=".tex",
