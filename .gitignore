@@ -1,1 +1,4 @@
 *.pdf
+*.txt
+*.tex
+config.ini
